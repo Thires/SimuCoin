@@ -62,9 +62,10 @@ namespace SimuCoin
             string balance = Regex.Match(pageContent, "<span class=\"blue\" id=\"side_balance\">(.*?)</span>").Groups[1].Value;
             currentCoinsLabel.Text = "You Have " + balance;
 
-            string claim = Regex.Match(pageContent, "< h1 class=\"RewardMessage centered sans_serif\">Claimed (.*?) SimuCoin reward!</h1>").Groups[1].Value;
+            //string claimed = Regex.Match(pageContent, "< h1 class=\"RewardMessage centered sans_serif\">Claimed (.*?) SimuCoin reward!</h1>").Groups[1].Value;
+            string claimAmount = Regex.Match(pageContent, "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>").Groups[1].Value;
             claimButton.Visible = true;
-            claimButton.Text = "Claim " + claim;
+            claimButton.Text = "Claim " + claimAmount;
         }
 
         private async void signoutButton_Click(object sender, EventArgs e)
