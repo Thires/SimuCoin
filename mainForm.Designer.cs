@@ -38,12 +38,13 @@
             this.userNameTB = new System.Windows.Forms.TextBox();
             this.passwordTB = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.usernameLabel = new System.Windows.Forms.Label();
+            this.passwordLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loginButton
             // 
+            this.loginButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.loginButton.Location = new System.Drawing.Point(8, 107);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(86, 24);
@@ -54,6 +55,7 @@
             // 
             // signoutButton
             // 
+            this.signoutButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.signoutButton.Location = new System.Drawing.Point(215, 107);
             this.signoutButton.Name = "signoutButton";
             this.signoutButton.Size = new System.Drawing.Size(86, 24);
@@ -64,6 +66,7 @@
             // 
             // claimButton
             // 
+            this.claimButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.claimButton.Location = new System.Drawing.Point(110, 107);
             this.claimButton.Name = "claimButton";
             this.claimButton.Size = new System.Drawing.Size(86, 24);
@@ -133,27 +136,27 @@
             this.statusLabel.TabIndex = 17;
             this.statusLabel.Text = "Status";
             // 
-            // label1
+            // usernameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(23, 57);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 16);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "UserName";
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.usernameLabel.ForeColor = System.Drawing.Color.White;
+            this.usernameLabel.Location = new System.Drawing.Point(8, 58);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(120, 16);
+            this.usernameLabel.TabIndex = 19;
+            this.usernameLabel.Text = "Play.net Account";
             // 
-            // label3
+            // passwordLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(215, 57);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 16);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "Password";
+            this.passwordLabel.AutoSize = true;
+            this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
+            this.passwordLabel.ForeColor = System.Drawing.Color.White;
+            this.passwordLabel.Location = new System.Drawing.Point(186, 58);
+            this.passwordLabel.Name = "passwordLabel";
+            this.passwordLabel.Size = new System.Drawing.Size(69, 16);
+            this.passwordLabel.TabIndex = 21;
+            this.passwordLabel.Text = "Password";
             // 
             // mainForm
             // 
@@ -162,8 +165,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(307, 162);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.passwordLabel);
+            this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.passwordTB);
             this.Controls.Add(this.userNameTB);
@@ -195,7 +198,7 @@
         private TextBox userNameTB;
         private TextBox passwordTB;
         private Label statusLabel;
-        private Label label1;
-        private Label label3;
+        private Label usernameLabel;
+        private Label passwordLabel;
     } 
 }

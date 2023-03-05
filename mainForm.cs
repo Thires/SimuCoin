@@ -3,15 +3,16 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SimuCoin
 {
     public partial class mainForm : Form
     {
+        private readonly HttpClient httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
         private CookieContainer cookies = new CookieContainer();
 
         public mainForm()
@@ -19,58 +20,25 @@ namespace SimuCoin
             InitializeComponent();
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private async void loginButton_Click(object sender, EventArgs e)
         {
             string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.CookieContainer = cookies;
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            string pageContent = string.Empty;
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    pageContent = reader.ReadToEnd();
-                }
-            }
+            var response = await httpClient.GetAsync(url);
+            var pageContent = await response.Content.ReadAsStringAsync();
 
             string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value;
 
             string username = userNameTB.Text;
             string password = passwordTB.Text;
 
-            string postData = string.Format("__RequestVerificationToken={0}&UserName={1}&Password={2}&RememberMe=true", token, username, password);
+            string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true";
 
-            request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
-            request.CookieContainer = cookies;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = postData.Length;
+            var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded");
+            response = await httpClient.PostAsync(url, content);
+            pageContent = await response.Content.ReadAsStringAsync();
 
-            using (Stream stream = request.GetRequestStream())
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.Write(postData);
-                }
-            }
-
-            response = (HttpWebResponse)request.GetResponse();
-
-            pageContent = string.Empty;
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    pageContent = reader.ReadToEnd();
-                }
-            }
-
-            if (response.ResponseUri.ToString() == "https://store.play.net/")
+            if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/")
             {
                 statusLabel.Text = "Login successful";
                 UpdateBalance();
@@ -81,25 +49,12 @@ namespace SimuCoin
             }
         }
 
-        private void UpdateBalance()
+        private async void UpdateBalance()
         {
             string url = "https://store.play.net/store/purchase/dr";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.CookieContainer = cookies;
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            string pageContent = string.Empty;
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    pageContent = reader.ReadToEnd();
-                }
-            }
-
+            var response = await httpClient.GetAsync(url);
+            var pageContent = await response.Content.ReadAsStringAsync();
 
             string time = Regex.Match(pageContent, "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>").Groups[1].Value;
             timeLabel.Text = "Next Subscription Bonus in " + time;
@@ -109,20 +64,27 @@ namespace SimuCoin
 
             string claim = Regex.Match(pageContent, "< h1 class=\"RewardMessage centered sans_serif\">Claimed (.*?) SimuCoin reward!</h1>").Groups[1].Value;
             claimButton.Visible = true;
-            claimButton.Text = "Claim Reward!";
+            claimButton.Text = "Claim " + claim;
         }
 
-        private void signoutButton_Click(object sender, EventArgs e)
+        private async void signoutButton_Click(object sender, EventArgs e)
         {
             string url = "https://store.play.net/Account/SignOut";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.CookieContainer = cookies;
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            statusLabel.Text = "Signed out";
+            using (var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = cookies }))
+            {
+                var response = await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    timeLabel.Text = "Next Subscription Bonus in";
+                    currentCoinsLabel.Text = "You Have";
+                    statusLabel.Text = "Signed out";
+                }
+                else
+                {
+                    statusLabel.Text = "Signout failed";
+                }
+            }
         }
 
         private void passwordTB_KeyDown(object sender, KeyEventArgs e)
