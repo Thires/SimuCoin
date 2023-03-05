@@ -61,6 +61,10 @@ namespace SimuCoin
 
             string balance = Regex.Match(pageContent, "<span class=\"blue\" id=\"side_balance\">(.*?)</span>").Groups[1].Value;
             currentCoinsLabel.Text = "You Have " + balance;
+            iconPictureBox.Visible = true;
+            iconPictureBox.Image = SimuCoin.Properties.Resources.sc_icon_28_w;
+            iconPictureBox.Location = new Point(currentCoinsLabel.Right, currentCoinsLabel.Top);
+
 
             //string claimed = Regex.Match(pageContent, "< h1 class=\"RewardMessage centered sans_serif\">Claimed (.*?) SimuCoin reward!</h1>").Groups[1].Value;
             string claimAmount = Regex.Match(pageContent, "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>").Groups[1].Value;
@@ -79,6 +83,7 @@ namespace SimuCoin
                 {
                     timeLabel.Text = "Next Subscription Bonus in";
                     currentCoinsLabel.Text = "You Have";
+                    iconPictureBox.Visible = false;
                     statusLabel.Text = "Signed out";
                 }
                 else
@@ -92,6 +97,12 @@ namespace SimuCoin
         {
             var capsLockOn = Control.IsKeyLocked(Keys.CapsLock);
             statusLabel.Text = $"Caps Lock is {(capsLockOn ? "on" : "off")}.";
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                loginButton.PerformClick();
+            }
         }
 
         private void claimButton_Click(object sender, EventArgs e)

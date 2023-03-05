@@ -1,4 +1,6 @@
-﻿namespace SimuCoin
+﻿using System.Windows.Forms;
+
+namespace SimuCoin
 {
     partial class mainForm
     {
@@ -28,7 +30,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.loginButton = new System.Windows.Forms.Button();
             this.signoutButton = new System.Windows.Forms.Button();
             this.claimButton = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
+            this.iconPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // loginButton
@@ -113,15 +116,15 @@
             this.userNameTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.userNameTB.Location = new System.Drawing.Point(8, 77);
             this.userNameTB.Name = "userNameTB";
-            this.userNameTB.Size = new System.Drawing.Size(114, 23);
+            this.userNameTB.Size = new System.Drawing.Size(130, 23);
             this.userNameTB.TabIndex = 13;
             // 
             // passwordTB
             // 
-            this.passwordTB.Location = new System.Drawing.Point(186, 77);
+            this.passwordTB.Location = new System.Drawing.Point(171, 78);
             this.passwordTB.Name = "passwordTB";
             this.passwordTB.PasswordChar = '*';
-            this.passwordTB.Size = new System.Drawing.Size(114, 23);
+            this.passwordTB.Size = new System.Drawing.Size(130, 23);
             this.passwordTB.TabIndex = 15;
             this.passwordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTB_KeyDown);
             // 
@@ -129,10 +132,11 @@
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.BackColor = System.Drawing.Color.Transparent;
+            this.statusLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.statusLabel.ForeColor = System.Drawing.Color.White;
             this.statusLabel.Location = new System.Drawing.Point(8, 136);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(51, 16);
+            this.statusLabel.Size = new System.Drawing.Size(54, 16);
             this.statusLabel.TabIndex = 17;
             this.statusLabel.Text = "Status";
             // 
@@ -140,10 +144,11 @@
             // 
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.usernameLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.usernameLabel.ForeColor = System.Drawing.Color.White;
             this.usernameLabel.Location = new System.Drawing.Point(8, 58);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(120, 16);
+            this.usernameLabel.Size = new System.Drawing.Size(130, 16);
             this.usernameLabel.TabIndex = 19;
             this.usernameLabel.Text = "Play.net Account";
             // 
@@ -151,20 +156,35 @@
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
+            this.passwordLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.passwordLabel.ForeColor = System.Drawing.Color.White;
-            this.passwordLabel.Location = new System.Drawing.Point(186, 58);
+            this.passwordLabel.Location = new System.Drawing.Point(171, 59);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(69, 16);
+            this.passwordLabel.Size = new System.Drawing.Size(77, 16);
             this.passwordLabel.TabIndex = 21;
             this.passwordLabel.Text = "Password";
+            // 
+            // iconPictureBox
+            // 
+            this.iconPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.iconPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.iconPictureBox.Image = global::SimuCoin.Properties.Resources.sc_icon_28_w;
+            this.iconPictureBox.Location = new System.Drawing.Point(172, 28);
+            this.iconPictureBox.Name = "iconPictureBox";
+            this.iconPictureBox.Size = new System.Drawing.Size(23, 23);
+            this.iconPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.iconPictureBox.TabIndex = 20;
+            this.iconPictureBox.TabStop = false;
+            this.iconPictureBox.Visible = false;
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::SimuCoin.Properties.Resources.footer_bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(307, 162);
+            this.Controls.Add(this.iconPictureBox);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.statusLabel);
@@ -182,6 +202,8 @@
             this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SimuCoins";
+            this.TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,5 +222,6 @@
         private Label statusLabel;
         private Label usernameLabel;
         private Label passwordLabel;
+        private PictureBox iconPictureBox;
     } 
 }
