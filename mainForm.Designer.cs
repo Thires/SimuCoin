@@ -32,7 +32,6 @@ namespace SimuCoin
         {
             this.loginButton = new System.Windows.Forms.Button();
             this.signoutButton = new System.Windows.Forms.Button();
-            this.claimButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
@@ -66,18 +65,6 @@ namespace SimuCoin
             this.signoutButton.Text = "Signout";
             this.signoutButton.UseVisualStyleBackColor = true;
             this.signoutButton.Click += new System.EventHandler(this.signoutButton_Click);
-            // 
-            // claimButton
-            // 
-            this.claimButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.claimButton.Location = new System.Drawing.Point(110, 107);
-            this.claimButton.Name = "claimButton";
-            this.claimButton.Size = new System.Drawing.Size(86, 24);
-            this.claimButton.TabIndex = 5;
-            this.claimButton.Text = "Claim";
-            this.claimButton.UseVisualStyleBackColor = true;
-            this.claimButton.Visible = false;
-            this.claimButton.Click += new System.EventHandler(this.claimButton_Click);
             // 
             // currentCoinsLabel
             // 
@@ -192,7 +179,6 @@ namespace SimuCoin
             this.Controls.Add(this.userNameTB);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.currentCoinsLabel);
-            this.Controls.Add(this.claimButton);
             this.Controls.Add(this.signoutButton);
             this.Controls.Add(this.loginButton);
             this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -213,7 +199,6 @@ namespace SimuCoin
 
         private Button loginButton;
         private Button signoutButton;
-        private Button claimButton;
         private Label currentCoinsLabel;
         private Label label2;
         private Label timeLabel;
