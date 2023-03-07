@@ -11,12 +11,12 @@ using System.Windows.Forms;
 
 namespace SimuCoin
 {
-    public partial class mainForm : Form
+    public partial class MainForm : Form
     {
         // Create an HttpClient to handle HTTP requests and responses
         // Create a CookieContainer to store cookies
         private readonly HttpClient httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
-        private CookieContainer cookies = new CookieContainer();
+        private readonly CookieContainer cookies = new CookieContainer();
 
         // URLs and patterns used for scraping the SimuCoin balance and rewards
         private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
@@ -25,12 +25,25 @@ namespace SimuCoin
         private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
         private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
 
-        public mainForm()
+        public string UserName
+        {
+            get { return UserNameTB.Text; }
+            set { UserNameTB.Text = value; }
+        }
+
+        public string Password
+        {
+            get { return PasswordTB.Text; }
+            set { PasswordTB.Text = value; }
+        }
+
+        public MainForm()
         {
             InitializeComponent();
         }
 
-        private async void loginButton_Click(object sender, EventArgs e)
+
+        private async void Login()
         {
             string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
 
@@ -39,16 +52,16 @@ namespace SimuCoin
             string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
 
             // Get the username and password from the text boxes
-            string username = userNameTB.Text;
-            string password = passwordTB.Text;
-           
+            string username = UserNameTB.Text;
+            string password = PasswordTB.Text;
+
             string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
 
             var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
             response = await httpClient.PostAsync(url, content); // Send POST request to the login page
-            pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+            _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
-            
+
             if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
             {
                 statusLabel.Text = "Login successful";
@@ -58,6 +71,16 @@ namespace SimuCoin
             {
                 statusLabel.Text = "Login failed";
             }
+        }
+
+        public void PluginInfoLogin()
+        {
+            Login();
+        }
+
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            Login();
         }
 
         private async void UpdateBalance() // Update the SimuCoin balance and claim any available rewards
@@ -108,7 +131,7 @@ namespace SimuCoin
             iconPictureBox.Location = new Point(currentCoinsLabel.Right, currentCoinsLabel.Top);
         }
 
-        private string? GetClaimAmount(string pageContent)
+        private static string? GetClaimAmount(string pageContent)
         {
             var match = Regex.Match(pageContent, ClaimPattern);
             return match.Success ? match.Groups[1].Value : null;
@@ -134,7 +157,7 @@ namespace SimuCoin
         }
 
         // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
-        private async void signoutButton_Click(object sender, EventArgs e)
+        private async void SignoutButton_Click(object sender, EventArgs e)
         {
             string url = "https://store.play.net/Account/SignOut";
 
@@ -156,7 +179,7 @@ namespace SimuCoin
         }
 
         // The passwordTB_KeyDown event handler checks if the Caps Lock key is on and updates the user interface accordingly. If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
-        private void passwordTB_KeyDown(object sender, KeyEventArgs e)
+        private void PasswordTB_KeyDown(object sender, KeyEventArgs e)
         {
             var capsLockOn = Control.IsKeyLocked(Keys.CapsLock);
             statusLabel.Text = $"Caps Lock is {(capsLockOn ? "on" : "off")}.";
@@ -164,17 +187,42 @@ namespace SimuCoin
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                loginButton.PerformClick();
+                LoginButton.PerformClick();
             }
         }
 
         // If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
-        private void userNameTB_KeyDown(object sender, KeyEventArgs e)
+        private void UserNameTB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                loginButton.PerformClick();
+                LoginButton.PerformClick();
+            }
+        }
+
+        // If the Esc key is pressed, it will close the plugin.
+        private async void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+
+                string url = "https://store.play.net/Account/SignOut";
+
+                using (var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = cookies }))
+                {
+                    var response = await httpClient.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        PluginInfo._host?.EchoText("-------------------\n" + "SimuCoin Signed out\n" + "-------------------");
+                    }
+                    else
+                    {
+                        PluginInfo._host?.EchoText("-----------------------\n" + "SimuCoin Signout failed\n" + "-----------------------");
+                    }
+                }
+                this.Close();
             }
         }
     }

@@ -9,12 +9,12 @@ namespace SimuCoin
 {
     public class PluginInfo : GeniePlugin.Interfaces.IPlugin
     {
-        static void Main(string[] args)
+        static void Main()
         {
         }
 
         public static IHost? _host;
-        private mainForm? Frm;
+        private MainForm? Frm;
 
         public void Initialize(IHost host)
         {
@@ -24,8 +24,9 @@ namespace SimuCoin
         public void Show()
         {
             if (Frm == null || Frm.IsDisposed)
-                Frm = new mainForm();
-
+            {
+                Frm = new MainForm();
+            }
             Frm.Show();
         }
 
@@ -41,6 +42,33 @@ namespace SimuCoin
 
         public string ParseInput(string text)
         {
+            if (text.ToLower().StartsWith("/simucoin ") || text.ToLower().StartsWith("/sc "))
+            {
+                var arguments = text.Split(' ');
+                if (arguments.Length == 3)
+                {
+                    Show();
+                    if (Frm != null && arguments.Length == 3)
+                    {
+                        Frm.UserName = arguments[1];
+                        Frm.Password = arguments[2];
+                        Frm.PluginInfoLogin();
+                    }
+                }
+                else
+                {
+                    // Invalid number of arguments
+                    _host?.EchoText("Invalid arguments. Usage: /simucoin or /sc <username> <password>");
+                }
+            }
+            else
+            {
+                if (text.ToLower().StartsWith("/simucoin") || text.ToLower().StartsWith("/sc"))
+                {
+                    Show();
+                    return string.Empty;
+                }
+            }
             return text;
         }
 
@@ -80,5 +108,7 @@ namespace SimuCoin
             get { return _enabled; }
             set { _enabled = value; }
         }
+
+
     }
 }

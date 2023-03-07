@@ -2,7 +2,7 @@
 
 namespace SimuCoin
 {
-    partial class mainForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,13 +30,13 @@ namespace SimuCoin
         /// </summary>
         private void InitializeComponent()
         {
-            this.loginButton = new System.Windows.Forms.Button();
-            this.signoutButton = new System.Windows.Forms.Button();
+            this.LoginButton = new System.Windows.Forms.Button();
+            this.SignoutButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
-            this.userNameTB = new System.Windows.Forms.TextBox();
-            this.passwordTB = new System.Windows.Forms.TextBox();
+            this.UserNameTB = new System.Windows.Forms.TextBox();
+            this.PasswordTB = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
@@ -44,27 +44,27 @@ namespace SimuCoin
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // loginButton
+            // LoginButton
             // 
-            this.loginButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.loginButton.Location = new System.Drawing.Point(8, 107);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(86, 24);
-            this.loginButton.TabIndex = 1;
-            this.loginButton.Text = "Login";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            this.LoginButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LoginButton.Location = new System.Drawing.Point(8, 107);
+            this.LoginButton.Name = "LoginButton";
+            this.LoginButton.Size = new System.Drawing.Size(86, 24);
+            this.LoginButton.TabIndex = 1;
+            this.LoginButton.Text = "Login";
+            this.LoginButton.UseVisualStyleBackColor = true;
+            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // signoutButton
+            // SignoutButton
             // 
-            this.signoutButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.signoutButton.Location = new System.Drawing.Point(215, 107);
-            this.signoutButton.Name = "signoutButton";
-            this.signoutButton.Size = new System.Drawing.Size(86, 24);
-            this.signoutButton.TabIndex = 3;
-            this.signoutButton.Text = "Signout";
-            this.signoutButton.UseVisualStyleBackColor = true;
-            this.signoutButton.Click += new System.EventHandler(this.signoutButton_Click);
+            this.SignoutButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SignoutButton.Location = new System.Drawing.Point(215, 107);
+            this.SignoutButton.Name = "SignoutButton";
+            this.SignoutButton.Size = new System.Drawing.Size(86, 24);
+            this.SignoutButton.TabIndex = 3;
+            this.SignoutButton.Text = "Signout";
+            this.SignoutButton.UseVisualStyleBackColor = true;
+            this.SignoutButton.Click += new System.EventHandler(this.SignoutButton_Click);
             // 
             // currentCoinsLabel
             // 
@@ -98,23 +98,23 @@ namespace SimuCoin
             this.timeLabel.TabIndex = 11;
             this.timeLabel.Text = "Next Subscription Bonus in:";
             // 
-            // userNameTB
+            // UserNameTB
             // 
-            this.userNameTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.userNameTB.Location = new System.Drawing.Point(8, 77);
-            this.userNameTB.Name = "userNameTB";
-            this.userNameTB.Size = new System.Drawing.Size(130, 23);
-            this.userNameTB.TabIndex = 13;
-            this.userNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.userNameTB_KeyDown);
+            this.UserNameTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.UserNameTB.Location = new System.Drawing.Point(8, 77);
+            this.UserNameTB.Name = "UserNameTB";
+            this.UserNameTB.Size = new System.Drawing.Size(130, 23);
+            this.UserNameTB.TabIndex = 13;
+            this.UserNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameTB_KeyDown);
             // 
-            // passwordTB
+            // PasswordTB
             // 
-            this.passwordTB.Location = new System.Drawing.Point(171, 78);
-            this.passwordTB.Name = "passwordTB";
-            this.passwordTB.PasswordChar = '*';
-            this.passwordTB.Size = new System.Drawing.Size(130, 23);
-            this.passwordTB.TabIndex = 15;
-            this.passwordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTB_KeyDown);
+            this.PasswordTB.Location = new System.Drawing.Point(171, 78);
+            this.PasswordTB.Name = "PasswordTB";
+            this.PasswordTB.PasswordChar = '*';
+            this.PasswordTB.Size = new System.Drawing.Size(130, 23);
+            this.PasswordTB.TabIndex = 15;
+            this.PasswordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTB_KeyDown);
             // 
             // statusLabel
             // 
@@ -165,7 +165,7 @@ namespace SimuCoin
             this.iconPictureBox.TabStop = false;
             this.iconPictureBox.Visible = false;
             // 
-            // mainForm
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -176,20 +176,22 @@ namespace SimuCoin
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.passwordTB);
-            this.Controls.Add(this.userNameTB);
+            this.Controls.Add(this.PasswordTB);
+            this.Controls.Add(this.UserNameTB);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.currentCoinsLabel);
-            this.Controls.Add(this.signoutButton);
-            this.Controls.Add(this.loginButton);
+            this.Controls.Add(this.SignoutButton);
+            this.Controls.Add(this.LoginButton);
             this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "mainForm";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SimuCoins";
             this.TopMost = true;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,13 +200,13 @@ namespace SimuCoin
 
         #endregion
 
-        private Button loginButton;
-        private Button signoutButton;
+        private Button LoginButton;
+        private Button SignoutButton;
         private Label currentCoinsLabel;
         private Label label2;
         private Label timeLabel;
-        private TextBox userNameTB;
-        private TextBox passwordTB;
+        private TextBox UserNameTB;
+        private TextBox PasswordTB;
         private Label statusLabel;
         private Label usernameLabel;
         private Label passwordLabel;
