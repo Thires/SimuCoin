@@ -14,7 +14,7 @@ namespace SimuCoin
         }
 
         public static IHost? _host;
-        private MainForm? Frm;
+        private mainForm? Frm;
 
         public void Initialize(IHost host)
         {
@@ -25,7 +25,7 @@ namespace SimuCoin
         {
             if (Frm == null || Frm.IsDisposed)
             {
-                Frm = new MainForm();
+                Frm = new mainForm();
             }
             Frm.Show();
         }

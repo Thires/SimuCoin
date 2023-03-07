@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SimuCoin
 {
-    public partial class MainForm : Form
+    public partial class mainForm : Form
     {
         // Create an HttpClient to handle HTTP requests and responses
         // Create a CookieContainer to store cookies
@@ -37,7 +37,7 @@ namespace SimuCoin
             set { PasswordTB.Text = value; }
         }
 
-        public MainForm()
+        public mainForm()
         {
             InitializeComponent();
         }
