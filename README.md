@@ -3,8 +3,7 @@
 # SimuCoin
 Plugin for Genie frontend to log into simucoin to get current amount, time left or to claim
 
-
 Can use command line /simucoin /sc username password to automatically login
 
-Enter key will trigger signing in
+Enter key will trigger signing in when fields are filled<br>
 Esc key will close the plugin
