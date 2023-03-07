@@ -13,8 +13,17 @@ namespace SimuCoin
 {
     public partial class mainForm : Form
     {
+        // Create an HttpClient to handle HTTP requests and responses
+        // Create a CookieContainer to store cookies
         private readonly HttpClient httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
         private CookieContainer cookies = new CookieContainer();
+
+        // URLs and patterns used for scraping the SimuCoin balance and rewards
+        private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
+        private const string ClaimRewardUrl = "https://store.play.net/Store/ClaimReward";
+        private const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
+        private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
+        private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
 
         public mainForm()
         {
@@ -23,23 +32,24 @@ namespace SimuCoin
 
         private async void loginButton_Click(object sender, EventArgs e)
         {
-            string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn";
+            string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
 
-            var response = await httpClient.GetAsync(url);
-            var pageContent = await response.Content.ReadAsStringAsync();
+            var response = await httpClient.GetAsync(url); // Send GET request to the login page
+            var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+            string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
 
-            string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value;
-
+            // Get the username and password from the text boxes
             string username = userNameTB.Text;
             string password = passwordTB.Text;
+           
+            string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
 
-            string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true";
+            var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
+            response = await httpClient.PostAsync(url, content); // Send POST request to the login page
+            pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
-            var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded");
-            response = await httpClient.PostAsync(url, content);
-            pageContent = await response.Content.ReadAsStringAsync();
-
-            if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/")
+            
+            if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
             {
                 statusLabel.Text = "Login successful";
                 UpdateBalance();
@@ -50,21 +60,14 @@ namespace SimuCoin
             }
         }
 
-        private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
-        private const string ClaimRewardUrl = "https://store.play.net/Store/ClaimReward";
-        private const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
-        private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
-        private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
-
-        private async void UpdateBalance()
+        private async void UpdateBalance() // Update the SimuCoin balance and claim any available rewards
         {
             try
             {
-                var pageContent = await GetPageContent(BalanceUrl);
-                UpdateTimeLabel(pageContent);
-                UpdateBalanceLabel(pageContent);
-
-                var claimAmount = GetClaimAmount(pageContent);
+                var pageContent = await GetPageContent(BalanceUrl); // Get the balance page content
+                UpdateTimeLabel(pageContent); // Update the time label with the next subscription bonus time
+                UpdateBalanceLabel(pageContent); // Update the balance label with the current SimuCoin balance
+                var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
                     var success = await ClaimReward();
@@ -130,7 +133,7 @@ namespace SimuCoin
             }
         }
 
-
+        // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
         private async void signoutButton_Click(object sender, EventArgs e)
         {
             string url = "https://store.play.net/Account/SignOut";
@@ -152,11 +155,22 @@ namespace SimuCoin
             }
         }
 
+        // The passwordTB_KeyDown event handler checks if the Caps Lock key is on and updates the user interface accordingly. If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
         private void passwordTB_KeyDown(object sender, KeyEventArgs e)
         {
             var capsLockOn = Control.IsKeyLocked(Keys.CapsLock);
             statusLabel.Text = $"Caps Lock is {(capsLockOn ? "on" : "off")}.";
 
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                loginButton.PerformClick();
+            }
+        }
+
+        // If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
+        private void userNameTB_KeyDown(object sender, KeyEventArgs e)
+        {
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;

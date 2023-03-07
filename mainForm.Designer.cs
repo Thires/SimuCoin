@@ -105,6 +105,7 @@ namespace SimuCoin
             this.userNameTB.Name = "userNameTB";
             this.userNameTB.Size = new System.Drawing.Size(130, 23);
             this.userNameTB.TabIndex = 13;
+            this.userNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.userNameTB_KeyDown);
             // 
             // passwordTB
             // 
