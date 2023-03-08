@@ -8,12 +8,12 @@ namespace SimuCoin
         {
         }
 
-        public static IHost? _host;
+        public static IHost? _coin;
         private mainForm? Frm;
 
         public void Initialize(IHost host)
         {
-            _host = host;
+            _coin = host;
         }
 
         public void Show()
@@ -53,7 +53,7 @@ namespace SimuCoin
                 else
                 {
                     // Invalid number of arguments
-                    _host?.EchoText("Invalid arguments. Usage: /simucoin or /sc <username> <password>");
+                    _coin?.EchoText("Invalid arguments. Usage: /simucoin or /sc <username> <password>");
                 }
             }
             else
@@ -89,7 +89,7 @@ namespace SimuCoin
 
         public string Description
         {
-            get { return "Log into SimuCoin store to check current coins and time"; }
+            get { return "Log into SimuCoin store to check current coins, time left and claim coins"; }
         }
 
         public string Author

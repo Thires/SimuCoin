@@ -223,13 +223,13 @@ namespace SimuCoin
                     {
                         var response = await httpClient.GetAsync(url);
                         response.EnsureSuccessStatusCode();
-                        PluginInfo._host?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------");
+                        PluginInfo._coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------");
                     }
                 }
                 catch (HttpRequestException ex)
                 {
                     // Handle any exceptions that might occur
-                    PluginInfo._host?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\n\r" + ex.Message);
+                    PluginInfo._coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\n\r" + ex.Message);
                     statusLabel.Text = "Signout Failed: " + ex.Message;
                 }
                 this.Close();
@@ -246,13 +246,13 @@ namespace SimuCoin
                 {
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    PluginInfo._host?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------");
+                    PluginInfo._coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------");
                 }
             }
             catch (HttpRequestException ex)
             {
                 // Handle any exceptions that might occur
-                PluginInfo._host?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\n\r" + ex.Message);
+                PluginInfo._coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\n\r" + ex.Message);
                 statusLabel.Text = "Signout Failed: " + ex.Message;
             }
             this.Close();
