@@ -33,8 +33,7 @@ namespace SimuCoin
             this.LoginButton = new System.Windows.Forms.Button();
             this.SignoutButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.timeLabel = new System.Windows.Forms.Label();
+            this.timeLeftLabel = new System.Windows.Forms.Label();
             this.UserNameTB = new System.Windows.Forms.TextBox();
             this.PasswordTB = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
@@ -79,24 +78,17 @@ namespace SimuCoin
             this.currentCoinsLabel.TabIndex = 7;
             this.currentCoinsLabel.Text = "You have";
             // 
-            // label2
+            // timeLeftLabel
             // 
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 23);
-            this.label2.TabIndex = 0;
-            // 
-            // timeLabel
-            // 
-            this.timeLabel.AutoSize = true;
-            this.timeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.timeLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.timeLabel.ForeColor = System.Drawing.Color.White;
-            this.timeLabel.Location = new System.Drawing.Point(8, 9);
-            this.timeLabel.Name = "timeLabel";
-            this.timeLabel.Size = new System.Drawing.Size(206, 16);
-            this.timeLabel.TabIndex = 11;
-            this.timeLabel.Text = "Next Subscription Bonus in:";
+            this.timeLeftLabel.AutoSize = true;
+            this.timeLeftLabel.BackColor = System.Drawing.Color.Transparent;
+            this.timeLeftLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.timeLeftLabel.ForeColor = System.Drawing.Color.White;
+            this.timeLeftLabel.Location = new System.Drawing.Point(8, 9);
+            this.timeLeftLabel.Name = "timeLeftLabel";
+            this.timeLeftLabel.Size = new System.Drawing.Size(201, 16);
+            this.timeLeftLabel.TabIndex = 11;
+            this.timeLeftLabel.Text = "Next Subscription Bonus in";
             // 
             // UserNameTB
             // 
@@ -178,7 +170,7 @@ namespace SimuCoin
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.PasswordTB);
             this.Controls.Add(this.UserNameTB);
-            this.Controls.Add(this.timeLabel);
+            this.Controls.Add(this.timeLeftLabel);
             this.Controls.Add(this.currentCoinsLabel);
             this.Controls.Add(this.SignoutButton);
             this.Controls.Add(this.LoginButton);
@@ -191,6 +183,7 @@ namespace SimuCoin
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SimuCoins";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -203,8 +196,7 @@ namespace SimuCoin
         private Button LoginButton;
         private Button SignoutButton;
         private Label currentCoinsLabel;
-        private Label label2;
-        private Label timeLabel;
+        private Label timeLeftLabel;
         private TextBox UserNameTB;
         private TextBox PasswordTB;
         private Label statusLabel;
