@@ -121,7 +121,17 @@ namespace SimuCoin
             currentCoinsLabel.Text = $"You Have {balance}";
             iconPictureBox.Visible = true;
             iconPictureBox.Image = SimuCoin.Properties.Resources.sc_icon_28_w;
-            iconPictureBox.Location = new Point(currentCoinsLabel.Right, currentCoinsLabel.Top);
+            iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
+            var exclamationLabel = new Label()
+            {
+                Text = "!",
+                Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold, GraphicsUnit.Point),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                AutoSize = true,
+                Location = new Point(iconPictureBox.Right - 5, 25)
+            };
+            this.Controls.Add(exclamationLabel);
         }
 
         private static string? GetClaimAmount(string pageContent)

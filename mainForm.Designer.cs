@@ -45,10 +45,10 @@ namespace SimuCoin
             // 
             // LoginButton
             // 
-            this.LoginButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LoginButton.Location = new System.Drawing.Point(8, 107);
+            this.LoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LoginButton.Location = new System.Drawing.Point(9, 107);
             this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(86, 24);
+            this.LoginButton.Size = new System.Drawing.Size(97, 24);
             this.LoginButton.TabIndex = 1;
             this.LoginButton.Text = "Login";
             this.LoginButton.UseVisualStyleBackColor = true;
@@ -56,10 +56,10 @@ namespace SimuCoin
             // 
             // SignoutButton
             // 
-            this.SignoutButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SignoutButton.Location = new System.Drawing.Point(215, 107);
+            this.SignoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SignoutButton.Location = new System.Drawing.Point(242, 107);
             this.SignoutButton.Name = "SignoutButton";
-            this.SignoutButton.Size = new System.Drawing.Size(86, 24);
+            this.SignoutButton.Size = new System.Drawing.Size(97, 24);
             this.SignoutButton.TabIndex = 3;
             this.SignoutButton.Text = "Signout";
             this.SignoutButton.UseVisualStyleBackColor = true;
@@ -69,12 +69,12 @@ namespace SimuCoin
             // 
             this.currentCoinsLabel.AutoSize = true;
             this.currentCoinsLabel.BackColor = System.Drawing.Color.Transparent;
-            this.currentCoinsLabel.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.currentCoinsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.currentCoinsLabel.ForeColor = System.Drawing.Color.White;
             this.currentCoinsLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.currentCoinsLabel.Location = new System.Drawing.Point(64, 26);
+            this.currentCoinsLabel.Location = new System.Drawing.Point(72, 26);
             this.currentCoinsLabel.Name = "currentCoinsLabel";
-            this.currentCoinsLabel.Size = new System.Drawing.Size(108, 25);
+            this.currentCoinsLabel.Size = new System.Drawing.Size(104, 25);
             this.currentCoinsLabel.TabIndex = 7;
             this.currentCoinsLabel.Text = "You have";
             // 
@@ -82,29 +82,29 @@ namespace SimuCoin
             // 
             this.timeLeftLabel.AutoSize = true;
             this.timeLeftLabel.BackColor = System.Drawing.Color.Transparent;
-            this.timeLeftLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.timeLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.timeLeftLabel.ForeColor = System.Drawing.Color.White;
-            this.timeLeftLabel.Location = new System.Drawing.Point(8, 9);
+            this.timeLeftLabel.Location = new System.Drawing.Point(9, 9);
             this.timeLeftLabel.Name = "timeLeftLabel";
-            this.timeLeftLabel.Size = new System.Drawing.Size(201, 16);
+            this.timeLeftLabel.Size = new System.Drawing.Size(191, 16);
             this.timeLeftLabel.TabIndex = 11;
             this.timeLeftLabel.Text = "Next Subscription Bonus in";
             // 
             // UserNameTB
             // 
             this.UserNameTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.UserNameTB.Location = new System.Drawing.Point(8, 77);
+            this.UserNameTB.Location = new System.Drawing.Point(9, 77);
             this.UserNameTB.Name = "UserNameTB";
-            this.UserNameTB.Size = new System.Drawing.Size(130, 23);
+            this.UserNameTB.Size = new System.Drawing.Size(146, 22);
             this.UserNameTB.TabIndex = 13;
             this.UserNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameTB_KeyDown);
             // 
             // PasswordTB
             // 
-            this.PasswordTB.Location = new System.Drawing.Point(171, 78);
+            this.PasswordTB.Location = new System.Drawing.Point(192, 78);
             this.PasswordTB.Name = "PasswordTB";
             this.PasswordTB.PasswordChar = '*';
-            this.PasswordTB.Size = new System.Drawing.Size(130, 23);
+            this.PasswordTB.Size = new System.Drawing.Size(146, 22);
             this.PasswordTB.TabIndex = 15;
             this.PasswordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTB_KeyDown);
             // 
@@ -112,11 +112,11 @@ namespace SimuCoin
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.BackColor = System.Drawing.Color.Transparent;
-            this.statusLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.statusLabel.ForeColor = System.Drawing.Color.White;
-            this.statusLabel.Location = new System.Drawing.Point(8, 136);
+            this.statusLabel.Location = new System.Drawing.Point(9, 136);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(54, 16);
+            this.statusLabel.Size = new System.Drawing.Size(50, 16);
             this.statusLabel.TabIndex = 17;
             this.statusLabel.Text = "Status";
             // 
@@ -124,11 +124,11 @@ namespace SimuCoin
             // 
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.usernameLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.usernameLabel.ForeColor = System.Drawing.Color.White;
-            this.usernameLabel.Location = new System.Drawing.Point(8, 58);
+            this.usernameLabel.Location = new System.Drawing.Point(9, 58);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(130, 16);
+            this.usernameLabel.Size = new System.Drawing.Size(122, 16);
             this.usernameLabel.TabIndex = 19;
             this.usernameLabel.Text = "Play.net Account";
             // 
@@ -136,11 +136,11 @@ namespace SimuCoin
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
-            this.passwordLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.passwordLabel.ForeColor = System.Drawing.Color.White;
-            this.passwordLabel.Location = new System.Drawing.Point(171, 59);
+            this.passwordLabel.Location = new System.Drawing.Point(192, 59);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(77, 16);
+            this.passwordLabel.Size = new System.Drawing.Size(75, 16);
             this.passwordLabel.TabIndex = 21;
             this.passwordLabel.Text = "Password";
             // 
@@ -149,9 +149,9 @@ namespace SimuCoin
             this.iconPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.iconPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.iconPictureBox.Image = global::SimuCoin.Properties.Resources.sc_icon_28_w;
-            this.iconPictureBox.Location = new System.Drawing.Point(172, 28);
+            this.iconPictureBox.Location = new System.Drawing.Point(192, 30);
             this.iconPictureBox.Name = "iconPictureBox";
-            this.iconPictureBox.Size = new System.Drawing.Size(23, 23);
+            this.iconPictureBox.Size = new System.Drawing.Size(16, 16);
             this.iconPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.iconPictureBox.TabIndex = 20;
             this.iconPictureBox.TabStop = false;
@@ -159,11 +159,11 @@ namespace SimuCoin
             // 
             // mainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::SimuCoin.Properties.Resources.footer_bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(307, 162);
+            this.ClientSize = new System.Drawing.Size(345, 162);
             this.Controls.Add(this.iconPictureBox);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameLabel);
@@ -174,7 +174,7 @@ namespace SimuCoin
             this.Controls.Add(this.currentCoinsLabel);
             this.Controls.Add(this.SignoutButton);
             this.Controls.Add(this.LoginButton);
-            this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.MaximizeBox = false;
