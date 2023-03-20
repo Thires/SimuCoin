@@ -30,6 +30,7 @@ namespace SimuCoin
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.LoginButton = new System.Windows.Forms.Button();
             this.SignoutButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
@@ -46,10 +47,10 @@ namespace SimuCoin
             // LoginButton
             // 
             this.LoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LoginButton.Location = new System.Drawing.Point(9, 107);
+            this.LoginButton.Location = new System.Drawing.Point(241, 106);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(97, 24);
-            this.LoginButton.TabIndex = 1;
+            this.LoginButton.TabIndex = 3;
             this.LoginButton.Text = "Login";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
@@ -57,10 +58,10 @@ namespace SimuCoin
             // SignoutButton
             // 
             this.SignoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SignoutButton.Location = new System.Drawing.Point(242, 107);
+            this.SignoutButton.Location = new System.Drawing.Point(9, 105);
             this.SignoutButton.Name = "SignoutButton";
             this.SignoutButton.Size = new System.Drawing.Size(97, 24);
-            this.SignoutButton.TabIndex = 3;
+            this.SignoutButton.TabIndex = 4;
             this.SignoutButton.Text = "Signout";
             this.SignoutButton.UseVisualStyleBackColor = true;
             this.SignoutButton.Click += new System.EventHandler(this.SignoutButton_Click);
@@ -96,7 +97,7 @@ namespace SimuCoin
             this.UserNameTB.Location = new System.Drawing.Point(9, 77);
             this.UserNameTB.Name = "UserNameTB";
             this.UserNameTB.Size = new System.Drawing.Size(146, 22);
-            this.UserNameTB.TabIndex = 13;
+            this.UserNameTB.TabIndex = 1;
             this.UserNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameTB_KeyDown);
             // 
             // PasswordTB
@@ -105,7 +106,7 @@ namespace SimuCoin
             this.PasswordTB.Name = "PasswordTB";
             this.PasswordTB.PasswordChar = '*';
             this.PasswordTB.Size = new System.Drawing.Size(146, 22);
-            this.PasswordTB.TabIndex = 15;
+            this.PasswordTB.TabIndex = 2;
             this.PasswordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTB_KeyDown);
             // 
             // statusLabel
@@ -161,8 +162,8 @@ namespace SimuCoin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SimuCoin.Properties.Resources.footer_bg;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(345, 162);
             this.Controls.Add(this.iconPictureBox);
             this.Controls.Add(this.passwordLabel);

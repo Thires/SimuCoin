@@ -8,12 +8,14 @@ namespace SimuCoin
         {
         }
 
-        public static IHost? _coin;
+        private static IHost? coin;
         private mainForm? Frm;
+        private NoForm? nFrm;
 
         public void Initialize(IHost host)
         {
-            _coin = host;
+            Coin = host;
+            nFrm = new NoForm();
         }
 
         public void Show()
@@ -53,16 +55,26 @@ namespace SimuCoin
                 else
                 {
                     // Invalid number of arguments
-                    _coin?.EchoText("Invalid arguments. Usage: /simucoin or /sc <username> <password>");
+                    Coin?.EchoText("Invalid arguments. Usage: /simucoin or /sc <username> <password>");
                 }
             }
-            else
+            else if (text.ToLower().StartsWith("/scnf "))
             {
-                if (text.ToLower().StartsWith("/simucoin") || text.ToLower().StartsWith("/sc"))
+                var arguments = text.Split(' ');
+                if (arguments.Length == 3)
                 {
-                    Show();
-                    return string.Empty;
+                    nFrm?.PluginNoFormLogin(arguments[1], arguments[2]);
                 }
+                else
+                {
+                    // Invalid number of arguments
+                    Coin?.EchoText("Invalid arguments. Usage: /scnf <username> <password>");
+                }
+            }
+            else if (text.ToLower().StartsWith("/simucoin") || text.ToLower().StartsWith("/sc"))
+            {
+                Show();
+                return string.Empty;
             }
             return text;
         }
@@ -98,12 +110,12 @@ namespace SimuCoin
         }
 
         private bool _enabled = true;
+
         public bool Enabled
         {
-            get { return _enabled; }
-            set { _enabled = value; }
+            get => _enabled;
+            set => _enabled = value;
         }
-
-
+        public static IHost? Coin { get => coin; set => coin = value; }
     }
 }
