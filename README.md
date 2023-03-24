@@ -5,7 +5,7 @@ Plugin for Genie frontend to log into simucoin to get current amount, time left 
 
 Commands:<br>
 /sc or /simucoin will open the window.<br>
-/sc username password or /simucoin username password will automatically login.<br>
+/sc username password or /simucoin username password will automatically login using the window.<br>
 /scnf username password will login without the window, echoing to game window.
 
 When window is open, can hit esc key to close it or use window close button.
