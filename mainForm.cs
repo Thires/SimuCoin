@@ -17,7 +17,6 @@ namespace SimuCoin
 
         // URLs and patterns used for scraping the SimuCoin balance and rewards
         private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
-        private const string ClaimRewardUrl = "https://store.play.net/Store/ClaimReward";
         private const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
         private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
         private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
@@ -264,10 +263,10 @@ namespace SimuCoin
                     using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    if (isSignedIn)
+                    /*if (isSignedIn)
                         PluginInfo.Coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------\r\n");
                     else
-                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");
+                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");*/
                 }
                 catch (HttpRequestException ex)
                 {
@@ -290,10 +289,10 @@ namespace SimuCoin
                     using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    if (isSignedIn)
+                    /*if (isSignedIn)
                         PluginInfo.Coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------\r\n");
                     else
-                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");
+                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");*/
                 }
                 catch (HttpRequestException ex)
                 {

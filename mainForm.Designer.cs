@@ -47,7 +47,7 @@ namespace SimuCoin
             // LoginButton
             // 
             this.LoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LoginButton.Location = new System.Drawing.Point(241, 106);
+            this.LoginButton.Location = new System.Drawing.Point(241, 105);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(97, 24);
             this.LoginButton.TabIndex = 3;
@@ -139,7 +139,7 @@ namespace SimuCoin
             this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
             this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.passwordLabel.ForeColor = System.Drawing.Color.White;
-            this.passwordLabel.Location = new System.Drawing.Point(192, 59);
+            this.passwordLabel.Location = new System.Drawing.Point(192, 58);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(75, 16);
             this.passwordLabel.TabIndex = 21;

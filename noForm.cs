@@ -60,7 +60,8 @@ namespace SimuCoin
 
             if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
             {
-                PluginInfo.Coin?.EchoText("\r\nLogin Successful\r\n");
+                //PluginInfo.Coin?.EchoText("\r\nLogin Successful\r\n");
+                PluginInfo.Coin?.EchoText("\r\nAccount: " + username.ToUpper());
                 DisplayBalance();
             }
             else
@@ -175,7 +176,7 @@ namespace SimuCoin
                 using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                 var response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
-                PluginInfo.Coin?.EchoText("SimuCoin Signed Out\r\n");
+                //PluginInfo.Coin?.EchoText("SimuCoin Signed Out\r\n");
             }
             catch (HttpRequestException ex)
             {
