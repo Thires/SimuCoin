@@ -9,20 +9,20 @@ namespace SimuCoin
         }
 
         private static IHost? coin;
-        private mainForm? Frm;
-        private NoForm? nFrm;
+        private MainForm? Frm;
+        private NoGUI? nFrm;
 
         public void Initialize(IHost host)
         {
             Coin = host;
-            nFrm = new NoForm();
+            nFrm = new NoGUI();
         }
 
         public void Show()
         {
             if (Frm == null || Frm.IsDisposed)
             {
-                Frm = new mainForm();
+                Frm = new MainForm();
             }
             Frm.Show();
         }
