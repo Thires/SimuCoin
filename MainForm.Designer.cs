@@ -30,7 +30,6 @@ namespace SimuCoin
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.LoginButton = new System.Windows.Forms.Button();
             this.SignoutButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
@@ -163,7 +162,7 @@ namespace SimuCoin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::SimuCoin.Properties.Resources.right_column_bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(345, 162);
             this.Controls.Add(this.UserNameCB);
