@@ -35,12 +35,12 @@ namespace SimuCoin
             this.SignoutButton = new System.Windows.Forms.Button();
             this.currentCoinsLabel = new System.Windows.Forms.Label();
             this.timeLeftLabel = new System.Windows.Forms.Label();
-            this.UserNameTB = new System.Windows.Forms.TextBox();
             this.PasswordTB = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.iconPictureBox = new System.Windows.Forms.PictureBox();
+            this.UserNameCB = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,15 +90,6 @@ namespace SimuCoin
             this.timeLeftLabel.Size = new System.Drawing.Size(191, 16);
             this.timeLeftLabel.TabIndex = 11;
             this.timeLeftLabel.Text = "Next Subscription Bonus in";
-            // 
-            // UserNameTB
-            // 
-            this.UserNameTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.UserNameTB.Location = new System.Drawing.Point(9, 77);
-            this.UserNameTB.Name = "UserNameTB";
-            this.UserNameTB.Size = new System.Drawing.Size(146, 22);
-            this.UserNameTB.TabIndex = 1;
-            this.UserNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameTB_KeyDown);
             // 
             // PasswordTB
             // 
@@ -158,6 +149,16 @@ namespace SimuCoin
             this.iconPictureBox.TabStop = false;
             this.iconPictureBox.Visible = false;
             // 
+            // UserNameCB
+            // 
+            this.UserNameCB.FormattingEnabled = true;
+            this.UserNameCB.Location = new System.Drawing.Point(9, 77);
+            this.UserNameCB.Name = "UserNameCB";
+            this.UserNameCB.Size = new System.Drawing.Size(146, 24);
+            this.UserNameCB.TabIndex = 1;
+            this.UserNameCB.SelectedIndexChanged += new System.EventHandler(this.UserNameCB_SelectedIndexChanged);
+            this.UserNameCB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameCB_KeyDown);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -165,12 +166,12 @@ namespace SimuCoin
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(345, 162);
+            this.Controls.Add(this.UserNameCB);
             this.Controls.Add(this.iconPictureBox);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.PasswordTB);
-            this.Controls.Add(this.UserNameTB);
             this.Controls.Add(this.timeLeftLabel);
             this.Controls.Add(this.currentCoinsLabel);
             this.Controls.Add(this.SignoutButton);
@@ -198,11 +199,11 @@ namespace SimuCoin
         private Button SignoutButton;
         private Label currentCoinsLabel;
         private Label timeLeftLabel;
-        private TextBox UserNameTB;
         private TextBox PasswordTB;
         private Label statusLabel;
         private Label usernameLabel;
         private Label passwordLabel;
         private PictureBox iconPictureBox;
+        private ComboBox UserNameCB;
     } 
 }

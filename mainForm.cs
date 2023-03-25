@@ -5,7 +5,10 @@ using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Linq;
 
 namespace SimuCoin
 {
@@ -22,12 +25,16 @@ namespace SimuCoin
         private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
 
         private bool isClosingDueToEscKey = false;
-        private bool isSignedIn = false;
+        //private bool isSignedIn = false;
+
+        private Label? exclamationLabel;
+
+        private static string xmlPath = Application.StartupPath;
 
         public string UserName
         {
-            get { return UserNameTB.Text; }
-            set { UserNameTB.Text = value; }
+            get { return UserNameCB.Text; }
+            set { UserNameCB.Text = value; }
         }
 
         public string Password
@@ -39,8 +46,108 @@ namespace SimuCoin
         public mainForm()
         {
             InitializeComponent();
+
+            xmlPath = Path.Combine(PluginInfo.Coin?.get_Variable("PluginPath") ?? "", "SimuCoin.xml");
+
+            if (File.Exists(xmlPath))
+            {
+                LoadXML();
+            }
+            else
+            {
+                var xmlDocument = new XmlDocument();
+                xmlDocument.AppendChild(xmlDocument.CreateElement("users"));
+                xmlDocument.Save(xmlPath);
+            }
+            exclamationLabel = null; // initialize the field to null
         }
 
+
+        private void SaveXML()
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(xmlPath);
+
+            var root = xmlDocument.DocumentElement ?? xmlDocument.CreateElement("users");
+            xmlDocument.AppendChild(root);
+
+            var userName = UserNameCB.Text;
+            var password = PasswordTB.Text;
+
+            // Encrypt the password
+            string encryptedPassword = EncryptDecrypt.Encrypt(password);
+
+            // Check if the user credentials already exist in the XML file
+            var userExists = false;
+            foreach (XmlNode node in root.ChildNodes)
+            {
+                if (node.Attributes?.GetNamedItem("username")?.Value == userName)
+                {
+                    ((XmlElement)node).SetAttribute("password", encryptedPassword);
+                    userExists = true;
+                    break;
+                }
+            }
+
+            if (!userExists)
+            {
+                // Create a new user node
+                var userNode = xmlDocument.CreateElement("user");
+                userNode.SetAttribute("username", userName.ToUpper());
+                userNode.SetAttribute("password", encryptedPassword);
+                root.AppendChild(userNode);
+            }
+            if (!UserNameCB.Items.Contains(userName))
+            {
+                UserNameCB.Items.Add(userName);
+            }
+            xmlDocument.Save(xmlPath);
+            UserNameCB.Items.Clear();
+            LoadXML();
+        }
+
+
+        private void LoadXML()
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(xmlPath);
+            if (xmlDocument.DocumentElement != null)
+            {
+                foreach (var userName in from XmlNode node in xmlDocument.DocumentElement.ChildNodes
+                                         let userName = node.Attributes?.GetNamedItem("username")?.Value
+                                         let password = node.Attributes?.GetNamedItem("password")?.Value
+                                         where !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password)
+                                         select userName)
+                {
+                    // Add the user credentials to the combo box
+                    UserNameCB.Items.Add(userName.ToUpper());
+                }
+            }
+        }
+
+        private void UserNameCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = UserNameCB.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(selectedItem))
+            {
+                // Load the password for the selected user from the XML file
+                var xmlDocument = new XmlDocument();
+                xmlDocument.Load(xmlPath);
+                if (xmlDocument.DocumentElement != null)
+                {
+                    foreach (var password in from XmlNode node in xmlDocument.DocumentElement.ChildNodes
+                                             let userName = node.Attributes?.GetNamedItem("username")?.Value
+                                             let password = node.Attributes?.GetNamedItem("password")?.Value
+                                             where userName == selectedItem && !string.IsNullOrEmpty(password)
+                                             select password)
+                    {
+                        PasswordTB.Text = EncryptDecrypt.Decrypt(password);
+                        break;
+                    }
+                }
+            }
+        }
 
         private async void Login()
         {
@@ -51,7 +158,7 @@ namespace SimuCoin
             string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
 
             // Get the username and password from the text boxes
-            string username = UserNameTB.Text;
+            string username = UserNameCB.Text.ToUpper();
             string password = PasswordTB.Text;
 
             string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
@@ -64,13 +171,18 @@ namespace SimuCoin
             if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
             {
                 statusLabel.Text = "Login Successful";
-                isSignedIn = true;
+                //isSignedIn = true;
                 UpdateBalance();
+                SaveXML();
+                if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
+                {
+                    UserNameCB.Items.Add(UserNameCB.Text.ToUpper());
+                }
             }
             else
             {
                 statusLabel.Text = "Incorrect Username and/or Password";
-                isSignedIn = false;
+                //isSignedIn = false;
             }
         }
 
@@ -132,16 +244,20 @@ namespace SimuCoin
             iconPictureBox.Visible = true;
             iconPictureBox.Image = SimuCoin.Properties.Resources.sc_icon_28_w;
             iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
-            var exclamationLabel = new Label()
+            if (exclamationLabel == null)
             {
-                Text = "!",
+                exclamationLabel = new Label()
+                {
+                    Text = "!",
                 Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold, GraphicsUnit.Point),
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
                 AutoSize = true,
-                Location = new Point(iconPictureBox.Right - 5, 25)
             };
             this.Controls.Add(exclamationLabel);
+            }
+            exclamationLabel.Visible = true;
+            exclamationLabel.Location = new Point(iconPictureBox.Right - 5, 25);
         }
 
         private static string? GetClaimAmount(string pageContent)
@@ -209,13 +325,14 @@ namespace SimuCoin
                 timeLeftLabel.Text = "Next Subscription Bonus in";
                 currentCoinsLabel.Text = "You Have";
                 iconPictureBox.Visible = false;
+                UserNameCB.Text = "";
+                PasswordTB.Text = "";
                 statusLabel.Text = "Signed Out";
-                var exclamationLabel = this.Controls.OfType<Label>().FirstOrDefault(l => l.Text == "!");
                 if (exclamationLabel != null)
                 {
                     this.Controls.Remove(exclamationLabel);
                 }
-                isSignedIn = false;
+                //isSignedIn = false;
             }
             catch (HttpRequestException ex)
             {
@@ -239,7 +356,7 @@ namespace SimuCoin
         }
 
         // If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
-        private void UserNameTB_KeyDown(object sender, KeyEventArgs e)
+        private void UserNameCB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -263,10 +380,6 @@ namespace SimuCoin
                     using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    /*if (isSignedIn)
-                        PluginInfo.Coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------\r\n");
-                    else
-                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");*/
                 }
                 catch (HttpRequestException ex)
                 {
@@ -289,10 +402,6 @@ namespace SimuCoin
                     using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                     var response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    /*if (isSignedIn)
-                        PluginInfo.Coin?.EchoText("-------------------\n" + "SimuCoin Signed Out\n" + "-------------------\r\n");
-                    else
-                        PluginInfo.Coin?.EchoText("SimuCoin Closed\r\n");*/
                 }
                 catch (HttpRequestException ex)
                 {
