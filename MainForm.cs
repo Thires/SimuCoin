@@ -70,29 +70,26 @@ namespace SimuCoin
             // Encrypt the password
             string encryptedPassword = EncryptDecrypt.Encrypt(password);
 
-            // Check if the username already exist in the XML file
-            var userExists = false;
             foreach (XmlNode node in root.ChildNodes)
             {
                 if (node.Attributes?.GetNamedItem("username")?.Value == userName)
                 {
                     ((XmlElement)node).SetAttribute("password", encryptedPassword);
-                    userExists = true;
                     break;
                 }
             }
 
-            if (!userExists)
+            // Check if the username already exist in the XML file
+            if (!UserNameCB.Items.Contains(userName.ToUpper()))
             {
                 // Create a new user node
                 var userNode = xmlDocument.CreateElement("user");
                 userNode.SetAttribute("username", userName.ToUpper());
                 userNode.SetAttribute("password", encryptedPassword);
                 root.AppendChild(userNode);
-            }
-            if (!UserNameCB.Items.Contains(userName))
-            {
-                UserNameCB.Items.Add(userName);
+
+                // Add the username to the combo box
+                UserNameCB.Items.Add(userName.ToUpper());
             }
             xmlDocument.Save(xmlPath);
             UserNameCB.Items.Clear();
