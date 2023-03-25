@@ -235,7 +235,7 @@ namespace SimuCoin
             var balance = Regex.Match(pageContent, BalancePattern).Groups[1].Value;
             currentCoinsLabel.Text = $"You Have {balance}";
             iconPictureBox.Visible = true;
-            iconPictureBox.Image = SimuCoin.Properties.Resources.sc_icon_28_w;
+            iconPictureBox.Image = SimuCoin.Properties.Resources.icon;
             iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
             if (exclamationLabel == null)
             {

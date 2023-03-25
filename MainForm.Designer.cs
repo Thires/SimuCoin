@@ -139,7 +139,7 @@ namespace SimuCoin
             // 
             this.iconPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.iconPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.iconPictureBox.Image = global::SimuCoin.Properties.Resources.sc_icon_28_w;
+            this.iconPictureBox.Image = global::SimuCoin.Properties.Resources.icon;
             this.iconPictureBox.Location = new System.Drawing.Point(192, 30);
             this.iconPictureBox.Name = "iconPictureBox";
             this.iconPictureBox.Size = new System.Drawing.Size(16, 16);
@@ -162,7 +162,7 @@ namespace SimuCoin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SimuCoin.Properties.Resources.right_column_bg;
+            this.BackgroundImage = global::SimuCoin.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(345, 162);
             this.Controls.Add(this.UserNameCB);
