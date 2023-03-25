@@ -73,9 +73,29 @@ namespace SimuCoin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap right_column_bg {
+            get {
+                object obj = ResourceManager.GetObject("right_column_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sc_icon_28_w {
             get {
                 object obj = ResourceManager.GetObject("sc_icon_28_w", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap simutronics_logo_blue {
+            get {
+                object obj = ResourceManager.GetObject("simutronics_logo_blue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
