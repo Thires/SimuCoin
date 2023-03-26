@@ -96,7 +96,7 @@ namespace SimuCoin
 
         public string Version
         {
-            get { return "1.0"; }
+            get { return "1.3"; }
         }
 
         public string Description

@@ -75,9 +75,9 @@ namespace SimuCoin
             this.currentCoinsLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.currentCoinsLabel.Location = new System.Drawing.Point(72, 26);
             this.currentCoinsLabel.Name = "currentCoinsLabel";
-            this.currentCoinsLabel.Size = new System.Drawing.Size(104, 25);
+            this.currentCoinsLabel.Size = new System.Drawing.Size(107, 25);
             this.currentCoinsLabel.TabIndex = 7;
-            this.currentCoinsLabel.Text = "You have";
+            this.currentCoinsLabel.Text = "You Have";
             // 
             // timeLeftLabel
             // 

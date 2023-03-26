@@ -66,7 +66,6 @@ namespace SimuCoin
             string encryptedPassword = EncryptDecrypt.Encrypt(password);
 
             // Check if the username already exists in the XML file
-
             if (root.SelectSingleNode($"user[@username='{userName.ToUpper()}']") is XmlElement userNode)
             {
                 // Replace the current password with the new generated password
@@ -133,6 +132,8 @@ namespace SimuCoin
 
         private async void Login()
         {
+            SignoutButton.Enabled = false;
+            LoginButton.Enabled = false;
             string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
 
             var response = await httpClient.GetAsync(url); // Send GET request to the login page
@@ -164,6 +165,8 @@ namespace SimuCoin
             {
                 statusLabel.Text = "Incorrect Username and/or Password";
             }
+            SignoutButton.Enabled = true;
+            LoginButton.Enabled = true;
         }
 
         public void PluginInfoLogin()
@@ -214,13 +217,15 @@ namespace SimuCoin
 
         private void UpdateBalanceLabel(string pageContent)
         {
+            this.SuspendLayout();
             var balance = Regex.Match(pageContent, BalancePattern).Groups[1].Value;
             currentCoinsLabel.Text = $"You Have {balance}";
             iconPictureBox.Visible = true;
-            iconPictureBox.Image = SimuCoin.Properties.Resources.icon;
+            iconPictureBox.Image = Properties.Resources.icon;
             iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
-            exclamationLabel.Location = new System.Drawing.Point(iconPictureBox.Right - 5, 22);
+            exclamationLabel.Location = new Point(iconPictureBox.Right - 5, 22);
             exclamationLabel.Visible = true;
+            this.ResumeLayout();
         }
 
         private static string? GetClaimAmount(string pageContent)
@@ -277,26 +282,32 @@ namespace SimuCoin
         // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
         private async void SignoutButton_Click(object sender, EventArgs e)
         {
+            SignoutButton.Enabled = false;
+            LoginButton.Enabled = false;
+            this.SuspendLayout();
+            timeLeftLabel.Text = "Next Subscription Bonus in";
+            currentCoinsLabel.Text = "You Have";
+            iconPictureBox.Visible = false;
+            UserNameCB.Text = "";
+            PasswordTB.Text = "";
+            statusLabel.Text = "Signed Out";
+            exclamationLabel.Visible = false;
+
             string url = "https://store.play.net/Account/SignOut";
             try
             {
                 using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
                 var response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
-
-                timeLeftLabel.Text = "Next Subscription Bonus in";
-                currentCoinsLabel.Text = "You Have";
-                iconPictureBox.Visible = false;
-                UserNameCB.Text = "";
-                PasswordTB.Text = "";
-                statusLabel.Text = "Signed Out";
-                exclamationLabel.Visible = false;
             }
             catch (HttpRequestException ex)
             {
                 // Handle any exceptions that might occur
                 PluginInfo.Coin?.EchoText($"SignoutButton_Click: {ex.Message}");
             }
+            this.ResumeLayout();
+            SignoutButton.Enabled = true;
+            LoginButton.Enabled = true;
         }
 
         private void LoginButton_Click(object sender, EventArgs e)

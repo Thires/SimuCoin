@@ -18,7 +18,6 @@ namespace SimuCoin
 
         private bool disposed = false;
 
-
         protected override void Dispose(bool disposing)
         {
             if (disposed)
