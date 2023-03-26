@@ -40,6 +40,7 @@ namespace SimuCoin
             this.passwordLabel = new System.Windows.Forms.Label();
             this.iconPictureBox = new System.Windows.Forms.PictureBox();
             this.UserNameCB = new System.Windows.Forms.ComboBox();
+            this.exclamationLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -158,6 +159,19 @@ namespace SimuCoin
             this.UserNameCB.SelectedIndexChanged += new System.EventHandler(this.UserNameCB_SelectedIndexChanged);
             this.UserNameCB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameCB_KeyDown);
             // 
+            // exclamationLabel
+            // 
+            this.exclamationLabel.AutoSize = true;
+            this.exclamationLabel.BackColor = System.Drawing.Color.Transparent;
+            this.exclamationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.exclamationLabel.ForeColor = System.Drawing.Color.White;
+            this.exclamationLabel.Location = new System.Drawing.Point(206, 22);
+            this.exclamationLabel.Name = "exclamationLabel";
+            this.exclamationLabel.Size = new System.Drawing.Size(20, 29);
+            this.exclamationLabel.TabIndex = 23;
+            this.exclamationLabel.Text = "!";
+            this.exclamationLabel.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -165,6 +179,7 @@ namespace SimuCoin
             this.BackgroundImage = global::SimuCoin.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(345, 162);
+            this.Controls.Add(this.exclamationLabel);
             this.Controls.Add(this.UserNameCB);
             this.Controls.Add(this.iconPictureBox);
             this.Controls.Add(this.passwordLabel);
@@ -204,5 +219,6 @@ namespace SimuCoin
         private Label passwordLabel;
         private PictureBox iconPictureBox;
         private ComboBox UserNameCB;
+        private Label exclamationLabel;
     } 
 }

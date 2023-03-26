@@ -14,9 +14,7 @@
   <ItemGroup>
     <Reference Include="Interfaces">
       <HintPath>..\..\..\Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Net.Http.Headers">
-      <HintPath>..\..\SimuCoin2\SimuCoin\Microsoft.Net.Http.Headers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   

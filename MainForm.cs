@@ -18,9 +18,6 @@ namespace SimuCoin
         private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
 
         private bool isClosingDueToEscKey = false;
-        //private bool isSignedIn = false;
-
-        private Label? exclamationLabel;
 
         private static string xmlPath = Application.StartupPath;
 
@@ -52,9 +49,7 @@ namespace SimuCoin
                 xmlDocument.AppendChild(xmlDocument.CreateElement("users"));
                 xmlDocument.Save(xmlPath);
             }
-            exclamationLabel = null; // initialize the field to null
         }
-
 
         private void SaveXML()
         {
@@ -93,7 +88,6 @@ namespace SimuCoin
             UserNameCB.Items.Clear();
             LoadXML();
         }
-
 
         private void LoadXML()
         {
@@ -159,7 +153,6 @@ namespace SimuCoin
             if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
             {
                 statusLabel.Text = "Login Successful";
-                //isSignedIn = true;
                 UpdateBalance();
                 SaveXML();
                 if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
@@ -170,16 +163,10 @@ namespace SimuCoin
             else
             {
                 statusLabel.Text = "Incorrect Username and/or Password";
-                //isSignedIn = false;
             }
         }
 
         public void PluginInfoLogin()
-        {
-            Login();
-        }
-
-        private void LoginButton_Click(object sender, EventArgs e)
         {
             Login();
         }
@@ -232,20 +219,8 @@ namespace SimuCoin
             iconPictureBox.Visible = true;
             iconPictureBox.Image = SimuCoin.Properties.Resources.icon;
             iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
-            if (exclamationLabel == null)
-            {
-                exclamationLabel = new Label()
-                {
-                    Text = "!",
-                Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold, GraphicsUnit.Point),
-                ForeColor = Color.White,
-                BackColor = Color.Transparent,
-                AutoSize = true,
-            };
-            this.Controls.Add(exclamationLabel);
-            }
+            exclamationLabel.Location = new System.Drawing.Point(iconPictureBox.Right - 5, 22);
             exclamationLabel.Visible = true;
-            exclamationLabel.Location = new Point(iconPictureBox.Right - 5, 25);
         }
 
         private static string? GetClaimAmount(string pageContent)
@@ -299,7 +274,6 @@ namespace SimuCoin
             }
         }
 
-
         // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
         private async void SignoutButton_Click(object sender, EventArgs e)
         {
@@ -316,11 +290,7 @@ namespace SimuCoin
                 UserNameCB.Text = "";
                 PasswordTB.Text = "";
                 statusLabel.Text = "Signed Out";
-                if (exclamationLabel != null)
-                {
-                    this.Controls.Remove(exclamationLabel);
-                }
-                //isSignedIn = false;
+                exclamationLabel.Visible = false;
             }
             catch (HttpRequestException ex)
             {
@@ -329,6 +299,10 @@ namespace SimuCoin
             }
         }
 
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            Login();
+        }
 
         // The passwordTB_KeyDown event handler checks if the Caps Lock key is on and updates the user interface accordingly. If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
         private void PasswordTB_KeyDown(object sender, KeyEventArgs e)
