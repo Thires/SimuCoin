@@ -66,8 +66,8 @@ namespace SimuCoin
             string encryptedPassword = EncryptDecrypt.Encrypt(password);
 
             // Check if the username already exists in the XML file
-            var userNode = root.SelectSingleNode($"user[@username='{userName.ToUpper()}']") as XmlElement;
-            if (userNode != null)
+
+            if (root.SelectSingleNode($"user[@username='{userName.ToUpper()}']") is XmlElement userNode)
             {
                 // Replace the current password with the new generated password
                 userNode.SetAttribute("password", encryptedPassword);
