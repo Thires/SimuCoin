@@ -184,21 +184,14 @@ namespace SimuCoin
                 var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
-                    var success = await ClaimReward();
-                    if (success)
-                    {
-                        statusLabel.Text = $"Claimed {claimAmount} SimuCoins";
-                    }
-                    else
-                    {
-                        statusLabel.Text = "Claim Failed";
-                    }
+                   await ClaimReward();
                 }
             }
             catch (Exception ex)
             {
                 PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
             }
+            await SignOut();
         }
 
         private async Task<string> GetPageContent(string url)
@@ -240,10 +233,10 @@ namespace SimuCoin
             {
                 var formContent = new FormUrlEncodedContent(new[]
                 {
-            new KeyValuePair<string, string>("game", "DR"),
-            new KeyValuePair<string, string>("filter", ""),
-            new KeyValuePair<string, string>("itemSearch", "")
-        });
+                    new KeyValuePair<string, string>("game", "DR"),
+                    new KeyValuePair<string, string>("filter", ""),
+                    new KeyValuePair<string, string>("itemSearch", "")
+                });
 
                 var response = await httpClient.PostAsync("https://store.play.net/Store/ClaimReward", formContent);
 
@@ -293,7 +286,16 @@ namespace SimuCoin
             statusLabel.Text = "Signed Out";
             exclamationLabel.Visible = false;
 
+            await SignOut();
+            this.ResumeLayout();
+            SignoutButton.Enabled = true;
+            LoginButton.Enabled = true;
+        }
+
+        private static async Task SignOut()
+        {
             string url = "https://store.play.net/Account/SignOut";
+
             try
             {
                 using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
@@ -303,11 +305,9 @@ namespace SimuCoin
             catch (HttpRequestException ex)
             {
                 // Handle any exceptions that might occur
-                PluginInfo.Coin?.EchoText($"SignoutButton_Click: {ex.Message}");
+                PluginInfo.Coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\r\n");
+                PluginInfo.Coin?.EchoText($"SignOut: {ex.Message}");
             }
-            this.ResumeLayout();
-            SignoutButton.Enabled = true;
-            LoginButton.Enabled = true;
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
@@ -345,21 +345,7 @@ namespace SimuCoin
             {
                 e.SuppressKeyPress = true;
                 isClosingDueToEscKey = true;
-
-                string url = "https://store.play.net/Account/SignOut";
-
-                try
-                {
-                    using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
-                    var response = await httpClient.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                }
-                catch (HttpRequestException ex)
-                {
-                    // Handle any exceptions that might occur
-                    PluginInfo.Coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\r\n");
-                    PluginInfo.Coin?.EchoText($"MainForm_KeyDown: {ex.Message}");
-                }
+                await SignOut();
                 this.Close();
             }
         }
@@ -368,20 +354,8 @@ namespace SimuCoin
         {
             if (!isClosingDueToEscKey)
             {
-                string url = "https://store.play.net/Account/SignOut";
-
-                try
-                {
-                    using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
-                    var response = await httpClient.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                }
-                catch (HttpRequestException ex)
-                {
-                    // Handle any exceptions that might occur
-                    PluginInfo.Coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\r\n");
-                    PluginInfo.Coin?.EchoText($"MainForm_FormClosinmg: {ex.Message}");
-                }
+                await SignOut();
+                this.Close();
             }
         }
     }
