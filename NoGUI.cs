@@ -88,7 +88,7 @@ namespace SimuCoin
             {
                 PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
             }
-            Signout(null, null);
+            await SignOut();
         }
 
         private async Task<string> GetPageContent(string url)
@@ -124,10 +124,10 @@ namespace SimuCoin
             {
                 var formContent = new FormUrlEncodedContent(new[]
                 {
-            new KeyValuePair<string, string>("game", "DR"),
-            new KeyValuePair<string, string>("filter", ""),
-            new KeyValuePair<string, string>("itemSearch", "")
-        });
+                    new KeyValuePair<string, string>("game", "DR"),
+                    new KeyValuePair<string, string>("filter", ""),
+                    new KeyValuePair<string, string>("itemSearch", "")
+                });
 
                 var response = await httpClient.PostAsync("https://store.play.net/Store/ClaimReward", formContent);
 
@@ -163,7 +163,7 @@ namespace SimuCoin
             }
         }
 
-        private async void Signout(object? sender, EventArgs? e)
+        private static async Task SignOut()
         {
             string url = "https://store.play.net/Account/SignOut";
 
