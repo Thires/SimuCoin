@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -83,9 +84,18 @@ namespace SimuCoin
                 UserNameCB.Items.Add(userName.ToUpper());
             }
 
+            // Save the selected item before clearing the combobox
+            var selectedItem = UserNameCB.SelectedItem;
+
             xmlDocument.Save(xmlPath);
             UserNameCB.Items.Clear();
             LoadXML();
+
+            // Set the selected item again
+            if (selectedItem != null && UserNameCB.Items.Contains(selectedItem))
+            {
+                UserNameCB.SelectedItem = selectedItem;
+            }
         }
 
         private void LoadXML()
@@ -335,6 +345,32 @@ namespace SimuCoin
             {
                 e.SuppressKeyPress = true;
                 LoginButton.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                e.SuppressKeyPress = true;
+
+                var currentIndex = UserNameCB.SelectedIndex;
+                var itemCount = UserNameCB.Items.Count;
+
+                if (e.KeyCode == Keys.Up)
+                {
+                    currentIndex--;
+                    if (currentIndex < 0)
+                    {
+                        currentIndex = itemCount - 1;
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    currentIndex++;
+                    if (currentIndex >= itemCount)
+                    {
+                        currentIndex = 0;
+                    }
+                }
+                UserNameCB.SelectedIndex = currentIndex;
             }
         }
 
