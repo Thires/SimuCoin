@@ -30,181 +30,194 @@ namespace SimuCoin
         /// </summary>
         private void InitializeComponent()
         {
-            this.LoginButton = new System.Windows.Forms.Button();
-            this.SignoutButton = new System.Windows.Forms.Button();
-            this.currentCoinsLabel = new System.Windows.Forms.Label();
-            this.timeLeftLabel = new System.Windows.Forms.Label();
-            this.PasswordTB = new System.Windows.Forms.TextBox();
-            this.statusLabel = new System.Windows.Forms.Label();
-            this.usernameLabel = new System.Windows.Forms.Label();
-            this.passwordLabel = new System.Windows.Forms.Label();
-            this.iconPictureBox = new System.Windows.Forms.PictureBox();
-            this.UserNameCB = new System.Windows.Forms.ComboBox();
-            this.exclamationLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).BeginInit();
-            this.SuspendLayout();
+            LoginButton = new Button();
+            SignoutButton = new Button();
+            currentCoinsLabel = new Label();
+            timeLeftLabel = new Label();
+            PasswordTB = new TextBox();
+            statusLabel = new Label();
+            usernameLabel = new Label();
+            passwordLabel = new Label();
+            iconPictureBox = new PictureBox();
+            UserNameCB = new ComboBox();
+            exclamationLabel = new Label();
+            RemoveButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox).BeginInit();
+            SuspendLayout();
             // 
             // LoginButton
             // 
-            this.LoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LoginButton.Location = new System.Drawing.Point(241, 105);
-            this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(97, 24);
-            this.LoginButton.TabIndex = 3;
-            this.LoginButton.Text = "Login";
-            this.LoginButton.UseVisualStyleBackColor = true;
-            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
+            LoginButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            LoginButton.Location = new Point(241, 105);
+            LoginButton.Name = "LoginButton";
+            LoginButton.Size = new Size(97, 24);
+            LoginButton.TabIndex = 3;
+            LoginButton.Text = "Login";
+            LoginButton.UseVisualStyleBackColor = true;
+            LoginButton.Click += LoginButton_Click;
             // 
             // SignoutButton
             // 
-            this.SignoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SignoutButton.Location = new System.Drawing.Point(9, 105);
-            this.SignoutButton.Name = "SignoutButton";
-            this.SignoutButton.Size = new System.Drawing.Size(97, 24);
-            this.SignoutButton.TabIndex = 4;
-            this.SignoutButton.Text = "Signout";
-            this.SignoutButton.UseVisualStyleBackColor = true;
-            this.SignoutButton.Click += new System.EventHandler(this.SignoutButton_Click);
+            SignoutButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            SignoutButton.Location = new Point(9, 105);
+            SignoutButton.Name = "SignoutButton";
+            SignoutButton.Size = new Size(97, 24);
+            SignoutButton.TabIndex = 4;
+            SignoutButton.Text = "Signout";
+            SignoutButton.UseVisualStyleBackColor = true;
+            SignoutButton.Click += SignoutButton_Click;
             // 
             // currentCoinsLabel
             // 
-            this.currentCoinsLabel.AutoSize = true;
-            this.currentCoinsLabel.BackColor = System.Drawing.Color.Transparent;
-            this.currentCoinsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currentCoinsLabel.ForeColor = System.Drawing.Color.White;
-            this.currentCoinsLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.currentCoinsLabel.Location = new System.Drawing.Point(72, 26);
-            this.currentCoinsLabel.Name = "currentCoinsLabel";
-            this.currentCoinsLabel.Size = new System.Drawing.Size(107, 25);
-            this.currentCoinsLabel.TabIndex = 7;
-            this.currentCoinsLabel.Text = "You Have";
+            currentCoinsLabel.AutoSize = true;
+            currentCoinsLabel.BackColor = Color.Transparent;
+            currentCoinsLabel.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            currentCoinsLabel.ForeColor = Color.White;
+            currentCoinsLabel.ImageAlign = ContentAlignment.MiddleRight;
+            currentCoinsLabel.Location = new Point(72, 26);
+            currentCoinsLabel.Name = "currentCoinsLabel";
+            currentCoinsLabel.Size = new Size(107, 25);
+            currentCoinsLabel.TabIndex = 7;
+            currentCoinsLabel.Text = "You Have";
             // 
             // timeLeftLabel
             // 
-            this.timeLeftLabel.AutoSize = true;
-            this.timeLeftLabel.BackColor = System.Drawing.Color.Transparent;
-            this.timeLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.timeLeftLabel.ForeColor = System.Drawing.Color.White;
-            this.timeLeftLabel.Location = new System.Drawing.Point(9, 9);
-            this.timeLeftLabel.Name = "timeLeftLabel";
-            this.timeLeftLabel.Size = new System.Drawing.Size(191, 16);
-            this.timeLeftLabel.TabIndex = 11;
-            this.timeLeftLabel.Text = "Next Subscription Bonus in";
+            timeLeftLabel.AutoSize = true;
+            timeLeftLabel.BackColor = Color.Transparent;
+            timeLeftLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            timeLeftLabel.ForeColor = Color.White;
+            timeLeftLabel.Location = new Point(9, 9);
+            timeLeftLabel.Name = "timeLeftLabel";
+            timeLeftLabel.Size = new Size(191, 16);
+            timeLeftLabel.TabIndex = 8;
+            timeLeftLabel.Text = "Next Subscription Bonus in";
             // 
             // PasswordTB
             // 
-            this.PasswordTB.Location = new System.Drawing.Point(192, 78);
-            this.PasswordTB.Name = "PasswordTB";
-            this.PasswordTB.PasswordChar = '*';
-            this.PasswordTB.Size = new System.Drawing.Size(146, 22);
-            this.PasswordTB.TabIndex = 2;
-            this.PasswordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTB_KeyDown);
+            PasswordTB.Location = new Point(192, 78);
+            PasswordTB.Name = "PasswordTB";
+            PasswordTB.PasswordChar = '*';
+            PasswordTB.Size = new Size(146, 22);
+            PasswordTB.TabIndex = 2;
+            PasswordTB.KeyDown += PasswordTB_KeyDown;
             // 
             // statusLabel
             // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.BackColor = System.Drawing.Color.Transparent;
-            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.statusLabel.ForeColor = System.Drawing.Color.White;
-            this.statusLabel.Location = new System.Drawing.Point(9, 136);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(50, 16);
-            this.statusLabel.TabIndex = 17;
-            this.statusLabel.Text = "Status";
+            statusLabel.AutoSize = true;
+            statusLabel.BackColor = Color.Transparent;
+            statusLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            statusLabel.ForeColor = Color.White;
+            statusLabel.Location = new Point(9, 136);
+            statusLabel.Name = "statusLabel";
+            statusLabel.Size = new Size(50, 16);
+            statusLabel.TabIndex = 6;
+            statusLabel.Text = "Status";
             // 
             // usernameLabel
             // 
-            this.usernameLabel.AutoSize = true;
-            this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.usernameLabel.ForeColor = System.Drawing.Color.White;
-            this.usernameLabel.Location = new System.Drawing.Point(9, 58);
-            this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(122, 16);
-            this.usernameLabel.TabIndex = 19;
-            this.usernameLabel.Text = "Play.net Account";
+            usernameLabel.AutoSize = true;
+            usernameLabel.BackColor = Color.Transparent;
+            usernameLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            usernameLabel.ForeColor = Color.White;
+            usernameLabel.Location = new Point(9, 58);
+            usernameLabel.Name = "usernameLabel";
+            usernameLabel.Size = new Size(122, 16);
+            usernameLabel.TabIndex = 19;
+            usernameLabel.Text = "Play.net Account";
             // 
             // passwordLabel
             // 
-            this.passwordLabel.AutoSize = true;
-            this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
-            this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.passwordLabel.ForeColor = System.Drawing.Color.White;
-            this.passwordLabel.Location = new System.Drawing.Point(192, 58);
-            this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(75, 16);
-            this.passwordLabel.TabIndex = 21;
-            this.passwordLabel.Text = "Password";
+            passwordLabel.AutoSize = true;
+            passwordLabel.BackColor = Color.Transparent;
+            passwordLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            passwordLabel.ForeColor = Color.White;
+            passwordLabel.Location = new Point(192, 58);
+            passwordLabel.Name = "passwordLabel";
+            passwordLabel.Size = new Size(75, 16);
+            passwordLabel.TabIndex = 21;
+            passwordLabel.Text = "Password";
             // 
             // iconPictureBox
             // 
-            this.iconPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.iconPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.iconPictureBox.Image = global::SimuCoin.Properties.Resources.icon;
-            this.iconPictureBox.Location = new System.Drawing.Point(192, 30);
-            this.iconPictureBox.Name = "iconPictureBox";
-            this.iconPictureBox.Size = new System.Drawing.Size(16, 16);
-            this.iconPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.iconPictureBox.TabIndex = 20;
-            this.iconPictureBox.TabStop = false;
-            this.iconPictureBox.Visible = false;
+            iconPictureBox.BackColor = Color.Transparent;
+            iconPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            iconPictureBox.Image = Properties.Resources.icon;
+            iconPictureBox.Location = new Point(192, 30);
+            iconPictureBox.Name = "iconPictureBox";
+            iconPictureBox.Size = new Size(16, 16);
+            iconPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            iconPictureBox.TabIndex = 20;
+            iconPictureBox.TabStop = false;
+            iconPictureBox.Visible = false;
             // 
             // UserNameCB
             // 
-            this.UserNameCB.FormattingEnabled = true;
-            this.UserNameCB.Location = new System.Drawing.Point(9, 77);
-            this.UserNameCB.Name = "UserNameCB";
-            this.UserNameCB.Size = new System.Drawing.Size(146, 24);
-            this.UserNameCB.TabIndex = 1;
-            this.UserNameCB.SelectedIndexChanged += new System.EventHandler(this.UserNameCB_SelectedIndexChanged);
-            this.UserNameCB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserNameCB_KeyDown);
+            UserNameCB.FormattingEnabled = true;
+            UserNameCB.Location = new Point(9, 77);
+            UserNameCB.Name = "UserNameCB";
+            UserNameCB.Size = new Size(146, 24);
+            UserNameCB.TabIndex = 1;
+            UserNameCB.SelectedIndexChanged += UserNameCB_SelectedIndexChanged;
+            UserNameCB.KeyDown += UserNameCB_KeyDown;
             // 
             // exclamationLabel
             // 
-            this.exclamationLabel.AutoSize = true;
-            this.exclamationLabel.BackColor = System.Drawing.Color.Transparent;
-            this.exclamationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.exclamationLabel.ForeColor = System.Drawing.Color.White;
-            this.exclamationLabel.Location = new System.Drawing.Point(206, 22);
-            this.exclamationLabel.Name = "exclamationLabel";
-            this.exclamationLabel.Size = new System.Drawing.Size(20, 29);
-            this.exclamationLabel.TabIndex = 23;
-            this.exclamationLabel.Text = "!";
-            this.exclamationLabel.Visible = false;
+            exclamationLabel.AutoSize = true;
+            exclamationLabel.BackColor = Color.Transparent;
+            exclamationLabel.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            exclamationLabel.ForeColor = Color.White;
+            exclamationLabel.Location = new Point(206, 22);
+            exclamationLabel.Name = "exclamationLabel";
+            exclamationLabel.Size = new Size(20, 29);
+            exclamationLabel.TabIndex = 23;
+            exclamationLabel.Text = "!";
+            exclamationLabel.Visible = false;
+            // 
+            // RemoveButton
+            // 
+            RemoveButton.Location = new Point(124, 105);
+            RemoveButton.Name = "RemoveButton";
+            RemoveButton.Size = new Size(97, 24);
+            RemoveButton.TabIndex = 5;
+            RemoveButton.Text = "Remove";
+            RemoveButton.UseVisualStyleBackColor = true;
+            RemoveButton.Click += RemoveButton_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SimuCoin.Properties.Resources.background;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(345, 162);
-            this.Controls.Add(this.exclamationLabel);
-            this.Controls.Add(this.UserNameCB);
-            this.Controls.Add(this.iconPictureBox);
-            this.Controls.Add(this.passwordLabel);
-            this.Controls.Add(this.usernameLabel);
-            this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.PasswordTB);
-            this.Controls.Add(this.timeLeftLabel);
-            this.Controls.Add(this.currentCoinsLabel);
-            this.Controls.Add(this.SignoutButton);
-            this.Controls.Add(this.LoginButton);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SimuCoins";
-            this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(9F, 16F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
+            BackgroundImage = Properties.Resources.background;
+            BackgroundImageLayout = ImageLayout.Center;
+            ClientSize = new Size(345, 162);
+            Controls.Add(RemoveButton);
+            Controls.Add(exclamationLabel);
+            Controls.Add(UserNameCB);
+            Controls.Add(iconPictureBox);
+            Controls.Add(passwordLabel);
+            Controls.Add(usernameLabel);
+            Controls.Add(statusLabel);
+            Controls.Add(PasswordTB);
+            Controls.Add(timeLeftLabel);
+            Controls.Add(currentCoinsLabel);
+            Controls.Add(SignoutButton);
+            Controls.Add(LoginButton);
+            DoubleBuffered = true;
+            Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "SimuCoins";
+            TopMost = true;
+            FormClosing += MainForm_FormClosing;
+            KeyDown += MainForm_KeyDown;
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -220,5 +233,6 @@ namespace SimuCoin
         private PictureBox iconPictureBox;
         private ComboBox UserNameCB;
         private Label exclamationLabel;
-    } 
+        private Button RemoveButton;
+    }
 }

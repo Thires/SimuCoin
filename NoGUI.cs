@@ -8,6 +8,7 @@ namespace SimuCoin
     {
         // Create an HttpClient to handle HTTP requests and responses
         // Create a CookieContainer to store cookies
+        private static readonly HttpClientHandler httpClientHandler = new() { CookieContainer = new() };
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new() });
 
         // URLs and patterns used for scraping the SimuCoin balance and rewards
@@ -28,6 +29,7 @@ namespace SimuCoin
             if (disposing)
             {
                 httpClient.Dispose();
+                httpClientHandler.Dispose();
             }
 
             disposed = true;
@@ -42,37 +44,49 @@ namespace SimuCoin
 
         private async Task Login(string username, string password)
         {
-            string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
-
-            var response = await httpClient.GetAsync(url); // Send GET request to the login page
-            var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-            string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
-
-            string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
-
-            var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
-
-            response = await httpClient.PostAsync(url, content); // Send POST request to the login page
-            _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-
-
-            if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
+            try
             {
-                PluginInfo.Coin?.EchoText("\r\nAccount: " + username.ToUpper());
-                await DisplayBalance();
+
+                string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
+
+                var response = await httpClient.GetAsync(url); // Send GET request to the login page
+                var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+                string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
+
+                string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
+
+                var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
+
+                response = await httpClient.PostAsync(url, content); // Send POST request to the login page
+                _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+
+
+                if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
+                {
+                    await DisplayBalance();
+                }
+                else
+                {
+                    PluginInfo.Coin?.EchoText("\r\nIncorrect Username and/or Password\r\n");
+                }
             }
-            else
+            catch (HttpRequestException)
             {
-                PluginInfo.Coin?.EchoText("\r\nIncorrect Username and/or Password\r\n");
+                PluginInfo.Coin?.EchoText("No Connection available");
             }
+
         }
 
-        private async Task DisplayBalance() // Update the SimuCoin balance and claim any available rewards
+        private async Task DisplayBalance()
         {
             try
             {
-                var pageContent = await GetPageContent(BalanceUrl); // Get the balance page content
-                var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
+                var response = await httpClient.GetAsync(BalanceUrl);
+                var pageContent = await response.Content.ReadAsStringAsync();
+
+                Match match = Regex.Match(pageContent, @"<div\s+class=""login\s+sans_serif"">\s*(\S+)\s+\|\s+<a\s+href=""/Account/SignOut"">SIGN OUT</a>\s*</div>");
+                PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
+                var claimAmount = GetClaimAmount(pageContent);
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
                     UpdateBalance(pageContent);
@@ -81,24 +95,17 @@ namespace SimuCoin
                 else
                 {
                     UpdateTime(pageContent);
-                    UpdateBalance(pageContent); // Update the balance with the current SimuCoin balance
+                    UpdateBalance(pageContent);
                 }
             }
             catch (Exception ex)
             {
                 PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
             }
+
             await SignOut();
         }
 
-        private async Task<string> GetPageContent(string url)
-        {
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)); // timeout after 10 seconds
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request, cts.Token);
-
-            return await response.Content.ReadAsStringAsync();
-        }
 
         private static void UpdateTime(string pageContent)
         {

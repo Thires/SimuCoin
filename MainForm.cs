@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -140,61 +141,74 @@ namespace SimuCoin
             }
         }
 
-        private async void Login()
-        {
-            SignoutButton.Enabled = false;
-            LoginButton.Enabled = false;
-            string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
-
-            var response = await httpClient.GetAsync(url); // Send GET request to the login page
-            var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-            string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
-
-            // Get the username and password from the text boxes
-            string username = UserNameCB.Text.ToUpper();
-            string password = PasswordTB.Text;
-
-            string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
-
-            var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
-            response = await httpClient.PostAsync(url, content); // Send POST request to the login page
-            _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-
-
-            if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
-            {
-                statusLabel.Text = "Login Successful";
-                UpdateBalance();
-                SaveXML();
-                if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
-                {
-                    UserNameCB.Items.Add(UserNameCB.Text.ToUpper());
-                }
-            }
-            else
-            {
-                statusLabel.Text = "Incorrect Username and/or Password";
-            }
-            SignoutButton.Enabled = true;
-            LoginButton.Enabled = true;
-        }
-
         public void PluginInfoLogin()
         {
             Login();
         }
 
-        private async void UpdateBalance() // Update the SimuCoin balance and claim any available rewards
+        private async void Login()
         {
             try
             {
-                var pageContent = await GetPageContent(BalanceUrl); // Get the balance page content
+                SuspendLayout();
+                LoginButton.Enabled = false;
+                RemoveButton.Enabled = false;
+                SignoutButton.Enabled = false;
+
+                string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
+
+                var response = await httpClient.GetAsync(url); // Send GET request to the login page
+                var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+                string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
+
+                // Get the username and password from the text boxes
+                string username = UserNameCB.Text.ToUpper();
+                string password = PasswordTB.Text;
+
+                string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
+
+                var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
+                response = await httpClient.PostAsync(url, content); // Send POST request to the login page
+                _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
+
+
+                if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
+                {
+                    statusLabel.Text = "Login Successful";
+                    await UpdateBalance();
+                    SaveXML();
+                    if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
+                    {
+                        UserNameCB.Items.Add(UserNameCB.Text.ToUpper());
+                    }
+                }
+                else
+                {
+                    statusLabel.Text = "Incorrect Username and/or Password";
+                }
+                LoginButton.Enabled = true;
+                RemoveButton.Enabled = true;
+                SignoutButton.Enabled = true;
+                ResumeLayout();
+            }
+            catch (HttpRequestException)
+            {
+                statusLabel.Text = "No Connection available";
+            }
+        }
+
+        private async Task UpdateBalance() // Update the SimuCoin balance and claim any available rewards
+        {
+            try
+            {
+                var response = await httpClient.GetAsync(BalanceUrl);
+                var pageContent = await response.Content.ReadAsStringAsync();
                 UpdateTimeLabel(pageContent); // Update the time label with the next subscription bonus time
                 UpdateBalanceLabel(pageContent); // Update the balance label with the current SimuCoin balance
                 var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
-                   await ClaimReward();
+                    await ClaimReward();
                 }
             }
             catch (Exception ex)
@@ -202,14 +216,6 @@ namespace SimuCoin
                 PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
             }
             await SignOut();
-        }
-
-        private async Task<string> GetPageContent(string url)
-        {
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)); // timeout after 10 seconds
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request, cts.Token);
-            return await response.Content.ReadAsStringAsync();
         }
 
         private void UpdateTimeLabel(string pageContent)
@@ -258,6 +264,7 @@ namespace SimuCoin
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
+                        timeLeftLabel.Text = $"Subscription Reward: {claimAmount} Free SimuCoins";
                         statusLabel.Text = $"Claimed {claimAmount} SimuCoins";
                         UpdateBalanceLabel(claimPageContent);
                         return true;
@@ -282,26 +289,6 @@ namespace SimuCoin
             }
         }
 
-        // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
-        private async void SignoutButton_Click(object sender, EventArgs e)
-        {
-            SignoutButton.Enabled = false;
-            LoginButton.Enabled = false;
-            this.SuspendLayout();
-            timeLeftLabel.Text = "Next Subscription Bonus in";
-            currentCoinsLabel.Text = "You Have";
-            iconPictureBox.Visible = false;
-            UserNameCB.Text = "";
-            PasswordTB.Text = "";
-            statusLabel.Text = "Signed Out";
-            exclamationLabel.Visible = false;
-
-            await SignOut();
-            this.ResumeLayout();
-            SignoutButton.Enabled = true;
-            LoginButton.Enabled = true;
-        }
-
         private static async Task SignOut()
         {
             string url = "https://store.play.net/Account/SignOut";
@@ -315,13 +302,40 @@ namespace SimuCoin
             catch (HttpRequestException ex)
             {
                 // Handle any exceptions that might occur
-                PluginInfo.Coin?.EchoText("-----------------------\n" + "SimuCoin Signout Failed\n" + "-----------------------\r\n");
                 PluginInfo.Coin?.EchoText($"SignOut: {ex.Message}");
             }
         }
 
+        // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
+        private async void SignoutButton_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            LoginButton.Enabled = false;
+            RemoveButton.Enabled = false;
+            SignoutButton.Enabled = false;
+            timeLeftLabel.Text = "";
+            currentCoinsLabel.Text = "";
+            iconPictureBox.Visible = false;
+            UserNameCB.Text = "";
+            PasswordTB.Text = "";
+            statusLabel.Text = "Signed Out";
+            exclamationLabel.Visible = false;
+
+            await SignOut();
+            LoginButton.Enabled = true;
+            RemoveButton.Enabled = true;
+            SignoutButton.Enabled = true;
+            this.ResumeLayout();
+        }
+
         private void LoginButton_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
+            currentCoinsLabel.Text = "You Have";
+            timeLeftLabel.Text = "Next Subscription Bonus in";
+            iconPictureBox.Visible = false;
+            exclamationLabel.Visible = false;
+            this.ResumeLayout();
             Login();
         }
 
@@ -372,6 +386,52 @@ namespace SimuCoin
                 }
                 UserNameCB.SelectedIndex = currentIndex;
             }
+        }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            // Get the selected user from the combo box
+            var selectedUser = UserNameCB.SelectedItem?.ToString();
+
+            LoginButton.Enabled = false;
+            RemoveButton.Enabled = false;
+            SignoutButton.Enabled = false;
+
+            if (!string.IsNullOrEmpty(selectedUser))
+            {
+                // Ask the user to confirm the deletion
+                var result = MessageBox.Show($"Are you sure you want to delete the user '{selectedUser}'?", "Confirm Deletion",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Load the XML document
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.Load(xmlPath);
+
+                    // Find the XML node for the selected user
+                    var userNode = xmlDocument.SelectSingleNode($"//user[@username='{selectedUser}']");
+
+                    if (userNode != null)
+                    {
+                        UserNameCB.Text = "";
+                        PasswordTB.Text = "";
+                        statusLabel.Text = $"Removed: {selectedUser}";
+                        // Remove the user node from the XML document
+                        xmlDocument.DocumentElement?.RemoveChild(userNode);
+
+                        // Save the updated XML file
+                        xmlDocument.Save(xmlPath);
+
+                        // Clear the combo box and reload the user list
+                        UserNameCB.Items.Clear();
+                        LoadXML();
+                    }
+                }
+            }
+            LoginButton.Enabled = true;
+            RemoveButton.Enabled = true;
+            SignoutButton.Enabled = true;
         }
 
         // If the Escape key is pressed, it will close the plugin.
