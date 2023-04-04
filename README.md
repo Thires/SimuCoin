@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/28072996/226875368-0994fca1-f347-4c69-9640-9ecf1bcfa319.png)
+![image](https://user-images.githubusercontent.com/28072996/229660411-6a5595b1-bd0b-4a08-9da1-63aec016c0a6.png)
 
 # SimuCoin
 Plugin for Genie frontend to log into simucoin to get current amount, time left or to claim
@@ -15,3 +15,4 @@ When window is open, can hit esc key to close it or use window close button.
 
 If simucoins are available to be claimed, they will be claimed when you login with the plugin.
 
+This can be set so that when you login the GUI will pop open for you to claim #trigger {^Welcome to DragonRealms} {#put /sc}
