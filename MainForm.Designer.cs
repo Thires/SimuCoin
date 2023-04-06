@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace SimuCoin
+﻿namespace SimuCoin
 {
     partial class MainForm
     {
@@ -77,7 +75,7 @@ namespace SimuCoin
             currentCoinsLabel.Location = new Point(72, 26);
             currentCoinsLabel.Name = "currentCoinsLabel";
             currentCoinsLabel.Size = new Size(107, 25);
-            currentCoinsLabel.TabIndex = 7;
+            currentCoinsLabel.TabIndex = 8;
             currentCoinsLabel.Text = "You Have";
             // 
             // timeLeftLabel
@@ -89,7 +87,7 @@ namespace SimuCoin
             timeLeftLabel.Location = new Point(9, 9);
             timeLeftLabel.Name = "timeLeftLabel";
             timeLeftLabel.Size = new Size(191, 16);
-            timeLeftLabel.TabIndex = 8;
+            timeLeftLabel.TabIndex = 7;
             timeLeftLabel.Text = "Next Subscription Bonus in";
             // 
             // PasswordTB
@@ -122,7 +120,7 @@ namespace SimuCoin
             usernameLabel.Location = new Point(9, 58);
             usernameLabel.Name = "usernameLabel";
             usernameLabel.Size = new Size(122, 16);
-            usernameLabel.TabIndex = 19;
+            usernameLabel.TabIndex = 10;
             usernameLabel.Text = "Play.net Account";
             // 
             // passwordLabel
@@ -134,7 +132,7 @@ namespace SimuCoin
             passwordLabel.Location = new Point(192, 58);
             passwordLabel.Name = "passwordLabel";
             passwordLabel.Size = new Size(75, 16);
-            passwordLabel.TabIndex = 21;
+            passwordLabel.TabIndex = 11;
             passwordLabel.Text = "Password";
             // 
             // iconPictureBox
@@ -169,7 +167,7 @@ namespace SimuCoin
             exclamationLabel.Location = new Point(206, 22);
             exclamationLabel.Name = "exclamationLabel";
             exclamationLabel.Size = new Size(20, 29);
-            exclamationLabel.TabIndex = 23;
+            exclamationLabel.TabIndex = 9;
             exclamationLabel.Text = "!";
             exclamationLabel.Visible = false;
             // 

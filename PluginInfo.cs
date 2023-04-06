@@ -1,6 +1,5 @@
 ﻿using GeniePlugin.Interfaces;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace SimuCoin
 {

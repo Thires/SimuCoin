@@ -46,7 +46,6 @@ namespace SimuCoin
         {
             try
             {
-
                 string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
 
                 var response = await httpClient.GetAsync(url); // Send GET request to the login page
