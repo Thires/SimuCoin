@@ -7,7 +7,7 @@ namespace SimuCoin
     {
         private static IHost? coin;
         private MainForm? form;
-        private NoGUI? noFrom;
+        private NoGUI? noForm;
 
         private bool _enabled = true;
 
@@ -30,7 +30,7 @@ namespace SimuCoin
         public void Initialize(IHost host)
         {
             coin = host;
-            noFrom = new NoGUI();
+            noForm = new NoGUI();
         }
 
         public void Show()
@@ -58,7 +58,7 @@ namespace SimuCoin
                 var arguments = text.Split(' ');
                 if (arguments.Length == 3)
                 {
-                    noFrom?.PluginNoFormLogin(arguments[1], arguments[2]);
+                    noForm?.PluginNoFormLogin(arguments[1], arguments[2]);
                 }
                 else
                 {
