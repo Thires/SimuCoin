@@ -18,4 +18,4 @@ The clear button will clear the fields currently on the GUI, remove button will 
 
 If simucoins are available to be claimed, they will be claimed when you login with the plugin.
 
-This can be set so that when you login the GUI will pop open for you to claim #trigger {^Welcome to DragonRealms} {#put /sca} or #put /scall
+This #trigger {^Welcome to DragonRealms} {#put /sca} or #put /scall can be used so when logging in it will check any saved accounts in the xml.
