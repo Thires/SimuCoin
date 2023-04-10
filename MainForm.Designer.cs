@@ -1,4 +1,4 @@
-﻿namespace SimuCoin
+﻿namespace SimuCoins
 {
     partial class MainForm
     {
@@ -28,67 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            LoginButton = new Button();
-            SignoutButton = new Button();
-            currentCoinsLabel = new Label();
-            timeLeftLabel = new Label();
+            LoginBTN = new Button();
+            ClearBTN = new Button();
+            coinsLBL = new Label();
+            timeLBL = new Label();
             PasswordTB = new TextBox();
-            statusLabel = new Label();
+            statusLBL = new Label();
             usernameLabel = new Label();
             passwordLabel = new Label();
-            iconPictureBox = new PictureBox();
+            iconPIC = new PictureBox();
             UserNameCB = new ComboBox();
-            exclamationLabel = new Label();
-            RemoveButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox).BeginInit();
+            exclamationLBL = new Label();
+            RemoveBTN = new Button();
+            ((System.ComponentModel.ISupportInitialize)iconPIC).BeginInit();
             SuspendLayout();
             // 
-            // LoginButton
+            // LoginBTN
             // 
-            LoginButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            LoginButton.Location = new Point(241, 105);
-            LoginButton.Name = "LoginButton";
-            LoginButton.Size = new Size(97, 24);
-            LoginButton.TabIndex = 3;
-            LoginButton.Text = "Login";
-            LoginButton.UseVisualStyleBackColor = true;
-            LoginButton.Click += LoginButton_Click;
+            LoginBTN.FlatAppearance.BorderSize = 0;
+            LoginBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            LoginBTN.Location = new Point(241, 105);
+            LoginBTN.Name = "LoginBTN";
+            LoginBTN.Size = new Size(97, 24);
+            LoginBTN.TabIndex = 3;
+            LoginBTN.Text = "Login";
+            LoginBTN.UseVisualStyleBackColor = true;
+            LoginBTN.Click += LoginBTN_Click;
             // 
-            // SignoutButton
+            // ClearBTN
             // 
-            SignoutButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            SignoutButton.Location = new Point(9, 105);
-            SignoutButton.Name = "SignoutButton";
-            SignoutButton.Size = new Size(97, 24);
-            SignoutButton.TabIndex = 4;
-            SignoutButton.Text = "Signout";
-            SignoutButton.UseVisualStyleBackColor = true;
-            SignoutButton.Click += SignoutButton_Click;
+            ClearBTN.FlatAppearance.BorderSize = 0;
+            ClearBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            ClearBTN.Location = new Point(9, 105);
+            ClearBTN.Name = "ClearBTN";
+            ClearBTN.Size = new Size(97, 24);
+            ClearBTN.TabIndex = 4;
+            ClearBTN.Text = "Clear";
+            ClearBTN.UseVisualStyleBackColor = true;
+            ClearBTN.Click += ClearBTN_Click;
             // 
-            // currentCoinsLabel
+            // coinsLBL
             // 
-            currentCoinsLabel.AutoSize = true;
-            currentCoinsLabel.BackColor = Color.Transparent;
-            currentCoinsLabel.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            currentCoinsLabel.ForeColor = Color.White;
-            currentCoinsLabel.ImageAlign = ContentAlignment.MiddleRight;
-            currentCoinsLabel.Location = new Point(72, 26);
-            currentCoinsLabel.Name = "currentCoinsLabel";
-            currentCoinsLabel.Size = new Size(107, 25);
-            currentCoinsLabel.TabIndex = 8;
-            currentCoinsLabel.Text = "You Have";
+            coinsLBL.AutoSize = true;
+            coinsLBL.BackColor = Color.Transparent;
+            coinsLBL.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            coinsLBL.ForeColor = Color.White;
+            coinsLBL.ImageAlign = ContentAlignment.MiddleRight;
+            coinsLBL.Location = new Point(72, 26);
+            coinsLBL.Name = "coinsLBL";
+            coinsLBL.Size = new Size(107, 25);
+            coinsLBL.TabIndex = 8;
+            coinsLBL.Text = "You Have";
             // 
-            // timeLeftLabel
+            // timeLBL
             // 
-            timeLeftLabel.AutoSize = true;
-            timeLeftLabel.BackColor = Color.Transparent;
-            timeLeftLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            timeLeftLabel.ForeColor = Color.White;
-            timeLeftLabel.Location = new Point(9, 9);
-            timeLeftLabel.Name = "timeLeftLabel";
-            timeLeftLabel.Size = new Size(191, 16);
-            timeLeftLabel.TabIndex = 7;
-            timeLeftLabel.Text = "Next Subscription Bonus in";
+            timeLBL.AutoSize = true;
+            timeLBL.BackColor = Color.Transparent;
+            timeLBL.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            timeLBL.ForeColor = Color.White;
+            timeLBL.Location = new Point(9, 9);
+            timeLBL.Name = "timeLBL";
+            timeLBL.Size = new Size(191, 16);
+            timeLBL.TabIndex = 7;
+            timeLBL.Text = "Next Subscription Bonus in";
             // 
             // PasswordTB
             // 
@@ -99,17 +101,17 @@
             PasswordTB.TabIndex = 2;
             PasswordTB.KeyDown += PasswordTB_KeyDown;
             // 
-            // statusLabel
+            // statusLBL
             // 
-            statusLabel.AutoSize = true;
-            statusLabel.BackColor = Color.Transparent;
-            statusLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            statusLabel.ForeColor = Color.White;
-            statusLabel.Location = new Point(9, 136);
-            statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(50, 16);
-            statusLabel.TabIndex = 6;
-            statusLabel.Text = "Status";
+            statusLBL.AutoSize = true;
+            statusLBL.BackColor = Color.Transparent;
+            statusLBL.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            statusLBL.ForeColor = Color.White;
+            statusLBL.Location = new Point(9, 136);
+            statusLBL.Name = "statusLBL";
+            statusLBL.Size = new Size(50, 16);
+            statusLBL.TabIndex = 6;
+            statusLBL.Text = "Status";
             // 
             // usernameLabel
             // 
@@ -135,18 +137,18 @@
             passwordLabel.TabIndex = 11;
             passwordLabel.Text = "Password";
             // 
-            // iconPictureBox
+            // iconPIC
             // 
-            iconPictureBox.BackColor = Color.Transparent;
-            iconPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-            iconPictureBox.Image = Properties.Resources.icon;
-            iconPictureBox.Location = new Point(192, 30);
-            iconPictureBox.Name = "iconPictureBox";
-            iconPictureBox.Size = new Size(16, 16);
-            iconPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            iconPictureBox.TabIndex = 20;
-            iconPictureBox.TabStop = false;
-            iconPictureBox.Visible = false;
+            iconPIC.BackColor = Color.Transparent;
+            iconPIC.BackgroundImageLayout = ImageLayout.Stretch;
+            iconPIC.Image = Properties.Resources.icon;
+            iconPIC.Location = new Point(192, 30);
+            iconPIC.Name = "iconPIC";
+            iconPIC.Size = new Size(16, 16);
+            iconPIC.SizeMode = PictureBoxSizeMode.StretchImage;
+            iconPIC.TabIndex = 20;
+            iconPIC.TabStop = false;
+            iconPIC.Visible = false;
             // 
             // UserNameCB
             // 
@@ -158,28 +160,29 @@
             UserNameCB.SelectedIndexChanged += UserNameCB_SelectedIndexChanged;
             UserNameCB.KeyDown += UserNameCB_KeyDown;
             // 
-            // exclamationLabel
+            // exclamationLBL
             // 
-            exclamationLabel.AutoSize = true;
-            exclamationLabel.BackColor = Color.Transparent;
-            exclamationLabel.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            exclamationLabel.ForeColor = Color.White;
-            exclamationLabel.Location = new Point(206, 22);
-            exclamationLabel.Name = "exclamationLabel";
-            exclamationLabel.Size = new Size(20, 29);
-            exclamationLabel.TabIndex = 9;
-            exclamationLabel.Text = "!";
-            exclamationLabel.Visible = false;
+            exclamationLBL.AutoSize = true;
+            exclamationLBL.BackColor = Color.Transparent;
+            exclamationLBL.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            exclamationLBL.ForeColor = Color.White;
+            exclamationLBL.Location = new Point(206, 22);
+            exclamationLBL.Name = "exclamationLBL";
+            exclamationLBL.Size = new Size(20, 29);
+            exclamationLBL.TabIndex = 9;
+            exclamationLBL.Text = "!";
+            exclamationLBL.Visible = false;
             // 
-            // RemoveButton
+            // RemoveBTN
             // 
-            RemoveButton.Location = new Point(124, 105);
-            RemoveButton.Name = "RemoveButton";
-            RemoveButton.Size = new Size(97, 24);
-            RemoveButton.TabIndex = 5;
-            RemoveButton.Text = "Remove";
-            RemoveButton.UseVisualStyleBackColor = true;
-            RemoveButton.Click += RemoveButton_Click;
+            RemoveBTN.FlatAppearance.BorderSize = 0;
+            RemoveBTN.Location = new Point(124, 105);
+            RemoveBTN.Name = "RemoveBTN";
+            RemoveBTN.Size = new Size(97, 24);
+            RemoveBTN.TabIndex = 5;
+            RemoveBTN.Text = "Remove";
+            RemoveBTN.UseVisualStyleBackColor = true;
+            RemoveBTN.Click += RemoveBTN_Click;
             // 
             // MainForm
             // 
@@ -189,18 +192,18 @@
             BackgroundImage = Properties.Resources.background;
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(345, 162);
-            Controls.Add(RemoveButton);
-            Controls.Add(exclamationLabel);
+            Controls.Add(RemoveBTN);
+            Controls.Add(exclamationLBL);
             Controls.Add(UserNameCB);
-            Controls.Add(iconPictureBox);
+            Controls.Add(iconPIC);
             Controls.Add(passwordLabel);
             Controls.Add(usernameLabel);
-            Controls.Add(statusLabel);
+            Controls.Add(statusLBL);
             Controls.Add(PasswordTB);
-            Controls.Add(timeLeftLabel);
-            Controls.Add(currentCoinsLabel);
-            Controls.Add(SignoutButton);
-            Controls.Add(LoginButton);
+            Controls.Add(timeLBL);
+            Controls.Add(coinsLBL);
+            Controls.Add(ClearBTN);
+            Controls.Add(LoginBTN);
             DoubleBuffered = true;
             Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -212,25 +215,26 @@
             Text = "SimuCoins";
             TopMost = true;
             FormClosing += MainForm_FormClosing;
+            FormClosed += MainForm_FormClosed;
             KeyDown += MainForm_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)iconPIC).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button LoginButton;
-        private Button SignoutButton;
-        private Label currentCoinsLabel;
-        private Label timeLeftLabel;
+        private Button LoginBTN;
+        private Button ClearBTN;
+        private Label coinsLBL;
+        private Label timeLBL;
         private TextBox PasswordTB;
-        private Label statusLabel;
+        private Label statusLBL;
         private Label usernameLabel;
         private Label passwordLabel;
-        private PictureBox iconPictureBox;
+        private PictureBox iconPIC;
         private ComboBox UserNameCB;
-        private Label exclamationLabel;
-        private Button RemoveButton;
+        private Label exclamationLBL;
+        private Button RemoveBTN;
     }
 }

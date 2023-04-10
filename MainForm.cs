@@ -3,19 +3,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace SimuCoin
+namespace SimuCoins
 {
     public partial class MainForm : Form
     {
         // Create an HttpClient to handle HTTP requests and responses
         // Create a CookieContainer to store cookies
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new CookieContainer() });
-
-        // URLs and patterns used for scraping the SimuCoin balance and rewards
-        private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
-        private const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
-        private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
-        private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
 
         private bool isClosingDueToEscKey = false;
 
@@ -37,7 +31,22 @@ namespace SimuCoin
         {
             InitializeComponent();
 
-            xmlPath = Path.Combine(PluginInfo.Coin?.get_Variable("PluginPath") ?? "", "SimuCoin.xml");
+            // Register the event handlers.
+            KeyDown += MainForm_KeyDown;
+            FormClosing += MainForm_FormClosing;
+            FormClosed += MainForm_FormClosed;
+
+            ClearBTN.GotFocus += Button_GotFocus;
+            ClearBTN.LostFocus += Button_LostFocus;
+            RemoveBTN.GotFocus += Button_GotFocus;
+            RemoveBTN.LostFocus += Button_LostFocus;
+            LoginBTN.GotFocus += Button_GotFocus;
+            LoginBTN.LostFocus += Button_LostFocus;
+
+            timeLBL.Text = "";
+            coinsLBL.Text = "";
+
+            xmlPath = Path.Combine(PluginInfo.Coin?.get_Variable("PluginPath") ?? "", "SimuCoins.xml");
 
             if (File.Exists(xmlPath))
             {
@@ -139,7 +148,7 @@ namespace SimuCoin
             }
         }
 
-        public void PluginInfoLogin()
+        public void GUILogin()
         {
             Login();
         }
@@ -149,11 +158,13 @@ namespace SimuCoin
             try
             {
                 SuspendLayout();
-                LoginButton.Enabled = false;
-                RemoveButton.Enabled = false;
-                SignoutButton.Enabled = false;
+                UserNameCB.Enabled = false;
+                PasswordTB.Enabled = false;
+                LoginBTN.Enabled = false;
+                RemoveBTN.Enabled = false;
+                ClearBTN.Enabled = false;
 
-                string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
+                string url = PluginInfo.LoginUrl; // URL for the login page
 
                 var response = await httpClient.GetAsync(url); // Send GET request to the login page
                 var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
@@ -170,9 +181,9 @@ namespace SimuCoin
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
 
-                if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
+                if (response.RequestMessage?.RequestUri?.ToString() == PluginInfo.StoreUrl) // Check if the login was successful
                 {
-                    statusLabel.Text = "Login Successful";
+                    statusLBL.Text = "Login Successful";
                     await UpdateBalance();
                     SaveXML();
                     if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
@@ -182,27 +193,30 @@ namespace SimuCoin
                 }
                 else
                 {
-                    statusLabel.Text = "Incorrect Username and/or Password";
+                    statusLBL.Text = "Incorrect Username and/or Password";
                 }
-                LoginButton.Enabled = true;
-                RemoveButton.Enabled = true;
-                SignoutButton.Enabled = true;
+                UserNameCB.Enabled = true;
+                UserNameCB.Focus();
+                PasswordTB.Enabled = true;
+                LoginBTN.Enabled = true;
+                RemoveBTN.Enabled = true;
+                ClearBTN.Enabled = true;
                 ResumeLayout();
             }
             catch (HttpRequestException)
             {
-                statusLabel.Text = "No Connection available";
+                statusLBL.Text = "No Connection available";
             }
         }
 
-        private async Task UpdateBalance() // Update the SimuCoin balance and claim any available rewards
+        private async Task UpdateBalance() // Update the SimuCoins balance and claim any available rewards
         {
             try
             {
-                var response = await httpClient.GetAsync(BalanceUrl);
+                var response = await httpClient.GetAsync(PluginInfo.BalanceUrl);
                 var pageContent = await response.Content.ReadAsStringAsync();
-                UpdateTimeLabel(pageContent); // Update the time label with the next subscription bonus time
-                UpdateBalanceLabel(pageContent); // Update the balance label with the current SimuCoin balance
+                UpdateTimeLBL(pageContent); // Update the time label with the next subscription bonus time
+                UpdateBalanceLBL(pageContent); // Update the balance label with the current SimuCoins balance
                 var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
@@ -216,28 +230,28 @@ namespace SimuCoin
             await SignOut();
         }
 
-        private void UpdateTimeLabel(string pageContent)
+        private void UpdateTimeLBL(string pageContent)
         {
-            var time = Regex.Match(pageContent, TimePattern).Groups[1].Value;
-            timeLeftLabel.Text = $"Next Subscription Bonus in {time}";
+            var time = Regex.Match(pageContent, PluginInfo.TimePattern).Groups[1].Value;
+            timeLBL.Text = $"Next Subscription Bonus in {time}";
         }
 
-        private void UpdateBalanceLabel(string pageContent)
+        private void UpdateBalanceLBL(string pageContent)
         {
             this.SuspendLayout();
-            var balance = Regex.Match(pageContent, BalancePattern).Groups[1].Value;
-            currentCoinsLabel.Text = $"You Have {balance}";
-            iconPictureBox.Visible = true;
-            iconPictureBox.Image = Properties.Resources.icon;
-            iconPictureBox.Location = new Point(currentCoinsLabel.Right - 5, 30);
-            exclamationLabel.Location = new Point(iconPictureBox.Right - 5, 22);
-            exclamationLabel.Visible = true;
+            var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
+            coinsLBL.Text = $"You Have {balance}";
+            iconPIC.Visible = true;
+            iconPIC.Image = Properties.Resources.icon;
+            iconPIC.Location = new Point(coinsLBL.Right - 5, 30);
+            exclamationLBL.Location = new Point(iconPIC.Right - 5, 22);
+            exclamationLBL.Visible = true;
             this.ResumeLayout();
         }
 
         private static string? GetClaimAmount(string pageContent)
         {
-            var match = Regex.Match(pageContent, ClaimPattern);
+            var match = Regex.Match(pageContent, PluginInfo.ClaimPattern);
             return match.Success ? match.Groups[1].Value : null;
         }
 
@@ -252,31 +266,31 @@ namespace SimuCoin
                     new KeyValuePair<string, string>("itemSearch", "")
                 });
 
-                var response = await httpClient.PostAsync("https://store.play.net/Store/ClaimReward", formContent);
+                var response = await httpClient.PostAsync(PluginInfo.ClaimUrl, formContent);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var claimPageContent = await response.Content.ReadAsStringAsync();
 
-                    var match = Regex.Match(claimPageContent, @"<h1 class=""RewardMessage centered sans_serif"">Claimed (\d+) SimuCoin reward!</h1>");
+                    var match = Regex.Match(claimPageContent, PluginInfo.RewardPattern);
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
-                        timeLeftLabel.Text = $"Subscription Reward: {claimAmount} Free SimuCoins";
-                        statusLabel.Text = $"Claimed {claimAmount} SimuCoins";
-                        UpdateBalanceLabel(claimPageContent);
+                        timeLBL.Text = $"Subscription Reward: {claimAmount} Free SimuCoins";
+                        statusLBL.Text = $"Claimed {claimAmount} SimuCoins";
+                        UpdateBalanceLBL(claimPageContent);
                         return true;
                     }
                     else
                     {
-                        statusLabel.Text = "Claim Failed";
+                        statusLBL.Text = "Claim Failed";
                         return false;
                     }
                 }
                 else
                 {
                     // handle error response
-                    PluginInfo.Coin?.EchoText("Request failed with status code: " + response.StatusCode);
+                    PluginInfo.Coin?.EchoText("Request failed: " + response.StatusCode);
                     return false;
                 }
             }
@@ -289,7 +303,7 @@ namespace SimuCoin
 
         private static async Task SignOut()
         {
-            string url = "https://store.play.net/Account/SignOut";
+            string url = PluginInfo.SignOutUrl;
 
             try
             {
@@ -304,35 +318,56 @@ namespace SimuCoin
             }
         }
 
-        // The signoutButton_Click event handler sends a GET request to the signout page to sign the user out. It then updates the user interface to show that the user is signed out.
-        private async void SignoutButton_Click(object sender, EventArgs e)
+
+        private void Button_GotFocus(object? sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackColor = Color.LightBlue;
+            }
+        }
+
+        private void Button_LostFocus(object? sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackColor = DefaultBackColor;
+            }
+        }
+
+        // The ClearBTN_Click event handler clears the GUI.
+        private void ClearBTN_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            LoginButton.Enabled = false;
-            RemoveButton.Enabled = false;
-            SignoutButton.Enabled = false;
-            timeLeftLabel.Text = "";
-            currentCoinsLabel.Text = "";
-            iconPictureBox.Visible = false;
+            UserNameCB.Enabled = false;
+            PasswordTB.Enabled = false;
+            LoginBTN.Enabled = false;
+            RemoveBTN.Enabled = false;
+            ClearBTN.Enabled = false;
+            timeLBL.Text = "";
+            coinsLBL.Text = "";
+            iconPIC.Visible = false;
             UserNameCB.Text = "";
             PasswordTB.Text = "";
-            statusLabel.Text = "Signed Out";
-            exclamationLabel.Visible = false;
+            statusLBL.Text = "Cleared";
+            exclamationLBL.Visible = false;
 
-            await SignOut();
-            LoginButton.Enabled = true;
-            RemoveButton.Enabled = true;
-            SignoutButton.Enabled = true;
+            UserNameCB.Enabled = true;
+            UserNameCB.Focus();
+            PasswordTB.Enabled = true;
+            LoginBTN.Enabled = true;
+            RemoveBTN.Enabled = true;
+            ClearBTN.Enabled = true;
             this.ResumeLayout();
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
+        private void LoginBTN_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            currentCoinsLabel.Text = "You Have";
-            timeLeftLabel.Text = "Next Subscription Bonus in";
-            iconPictureBox.Visible = false;
-            exclamationLabel.Visible = false;
+            coinsLBL.Text = "You Have";
+            timeLBL.Text = "Next Subscription Bonus in";
+            iconPIC.Visible = false;
+            exclamationLBL.Visible = false;
             this.ResumeLayout();
             Login();
         }
@@ -341,12 +376,12 @@ namespace SimuCoin
         private void PasswordTB_KeyDown(object sender, KeyEventArgs e)
         {
             var capsLockOn = Control.IsKeyLocked(Keys.CapsLock);
-            statusLabel.Text = $"Caps Lock is {(capsLockOn ? "on" : "off")}.";
+            statusLBL.Text = $"Caps Lock is {(capsLockOn ? "on" : "off")}.";
 
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                LoginButton.PerformClick();
+                LoginBTN.PerformClick();
             }
         }
 
@@ -356,7 +391,7 @@ namespace SimuCoin
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                LoginButton.PerformClick();
+                LoginBTN.PerformClick();
             }
 
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
@@ -386,14 +421,16 @@ namespace SimuCoin
             }
         }
 
-        private void RemoveButton_Click(object sender, EventArgs e)
+        private void RemoveBTN_Click(object sender, EventArgs e)
         {
             // Get the selected user from the combo box
             var selectedUser = UserNameCB.SelectedItem?.ToString();
 
-            LoginButton.Enabled = false;
-            RemoveButton.Enabled = false;
-            SignoutButton.Enabled = false;
+            UserNameCB.Enabled = false;
+            PasswordTB.Enabled = false;
+            LoginBTN.Enabled = false;
+            RemoveBTN.Enabled = false;
+            ClearBTN.Enabled = false;
 
             if (!string.IsNullOrEmpty(selectedUser))
             {
@@ -414,7 +451,7 @@ namespace SimuCoin
                     {
                         UserNameCB.Text = "";
                         PasswordTB.Text = "";
-                        statusLabel.Text = $"Removed: {selectedUser}";
+                        statusLBL.Text = $"Removed: {selectedUser}";
                         // Remove the user node from the XML document
                         xmlDocument.DocumentElement?.RemoveChild(userNode);
 
@@ -427,30 +464,46 @@ namespace SimuCoin
                     }
                 }
             }
-            LoginButton.Enabled = true;
-            RemoveButton.Enabled = true;
-            SignoutButton.Enabled = true;
+            UserNameCB.Enabled = true;
+            UserNameCB.Focus();
+            PasswordTB.Enabled = true;
+            LoginBTN.Enabled = true;
+            RemoveBTN.Enabled = true;
+            ClearBTN.Enabled = true;
         }
 
         // If the Escape key is pressed, it will close the plugin.
-        private async void MainForm_KeyDown(object sender, KeyEventArgs e)
+        private void MainForm_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
                 isClosingDueToEscKey = true;
-                await SignOut();
                 this.Close();
             }
         }
 
-        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
-            if (!isClosingDueToEscKey)
+            if (isClosingDueToEscKey)
             {
-                await SignOut();
+                // Unregister the event handlers before closing the form.
+                this.KeyDown -= (s, ev) => MainForm_KeyDown(s, ev);
+                this.FormClosing -= (s, ev) => MainForm_FormClosing(s, ev);
+            }
+            else
+            {
+                isClosingDueToEscKey = true;
                 this.Close();
             }
+        }
+
+        private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            // Unregister the event handlers after the form has closed.
+            this.KeyDown -= (s, ev) => MainForm_KeyDown(s, ev);
+            this.FormClosing -= (s, ev) => MainForm_FormClosing(s, ev);
+            this.FormClosed -= (s, ev) => MainForm_FormClosed(s, ev);
         }
     }
 }

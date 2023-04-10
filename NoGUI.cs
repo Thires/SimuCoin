@@ -1,8 +1,10 @@
 ﻿using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 
-namespace SimuCoin
+namespace SimuCoins
 {
     public class NoGUI : HttpClient, IDisposable
     {
@@ -11,13 +13,9 @@ namespace SimuCoin
         private static readonly HttpClientHandler httpClientHandler = new() { CookieContainer = new() };
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new() });
 
-        // URLs and patterns used for scraping the SimuCoin balance and rewards
-        private const string BalanceUrl = "https://store.play.net/store/purchase/dr";
-        private const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
-        private const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
-        private const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
-
         private bool disposed = false;
+        private static bool noShowEcho = false;
+
 
         protected override void Dispose(bool disposing)
         {
@@ -37,16 +35,66 @@ namespace SimuCoin
             base.Dispose(disposing);
         }
 
-        public void PluginNoFormLogin(string username, string password)
+        private static List<(string, string)> LoadXML()
         {
+            var users = new List<(string, string)>();
+
+            string pluginPath = PluginInfo.Coin?.get_Variable("PluginPath") ?? string.Empty;
+            if (!string.IsNullOrEmpty(pluginPath))
+            {
+                string xmlPath = Path.Combine(pluginPath, "SimuCoins.xml");
+
+                if (File.Exists(xmlPath))
+                {
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.Load(xmlPath);
+
+                    var userNodes = xmlDocument.SelectNodes("//user");
+                    if (userNodes != null)
+                    {
+                        foreach (XmlNode userNode in userNodes)
+                        {
+                            string? username = userNode.Attributes?["username"]?.Value;
+                            string? password = userNode.Attributes?["password"]?.Value;
+
+                            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                            {
+                                users.Add((username, password));
+                            }
+                        }
+                    }
+                }
+            }
+            return users;
+        }
+
+        public async Task DoAll()
+        {
+            noShowEcho = true;
+            var users = LoadXML();
+
+            foreach (var (username, password) in users)
+            {
+                await Login(username, EncryptDecrypt.Decrypt(password));
+            }
+            PluginInfo.Coin?.EchoText("\r\nAccount(s) Checked...");
+        }
+
+        public void NoGUILogin(string username, string password)
+        {
+            noShowEcho = false;
             Task.Run(async () => await Login(username, password));
         }
 
-        private async Task Login(string username, string password)
+        private async Task<bool> Login(string username, string password)
         {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
             try
             {
-                string url = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn"; // URL for the login page
+                string url = PluginInfo.LoginUrl; // URL for the login page
 
                 var response = await httpClient.GetAsync(url); // Send GET request to the login page
                 var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
@@ -60,7 +108,7 @@ namespace SimuCoin
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
 
-                if (response.RequestMessage?.RequestUri?.ToString() == "https://store.play.net/") // Check if the login was successful
+                if (response.RequestMessage?.RequestUri?.ToString() == PluginInfo.StoreUrl) // Check if the login was successful
                 {
                     await DisplayBalance();
                 }
@@ -73,18 +121,19 @@ namespace SimuCoin
             {
                 PluginInfo.Coin?.EchoText("No Connection available");
             }
-
+            return true;
         }
 
         private async Task DisplayBalance()
         {
             try
             {
-                var response = await httpClient.GetAsync(BalanceUrl);
+                var response = await httpClient.GetAsync(PluginInfo.BalanceUrl);
                 var pageContent = await response.Content.ReadAsStringAsync();
 
-                Match match = Regex.Match(pageContent, @"<div\s+class=""login\s+sans_serif"">\s*(\S+)\s+\|\s+<a\s+href=""/Account/SignOut"">SIGN OUT</a>\s*</div>");
-                PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
+                Match match = Regex.Match(pageContent, PluginInfo.NamePattern);
+                if (!noShowEcho)
+                    PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
                 var claimAmount = GetClaimAmount(pageContent);
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
@@ -99,28 +148,28 @@ namespace SimuCoin
             }
             catch (Exception ex)
             {
-                PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
+                PluginInfo.Coin?.EchoText($"DisplayBalance: {ex.Message}");
             }
-
             await SignOut();
         }
 
-
         private static void UpdateTime(string pageContent)
         {
-            var time = Regex.Match(pageContent, TimePattern).Groups[1].Value;
-            PluginInfo.Coin?.EchoText($"Next Subscription Bonus in {time}");
+            var time = Regex.Match(pageContent, PluginInfo.TimePattern).Groups[1].Value;
+            if (!noShowEcho)
+                PluginInfo.Coin?.EchoText($"Next Subscription Bonus in {time}");
         }
 
         private static void UpdateBalance(string pageContent)
         {
-            var balance = Regex.Match(pageContent, BalancePattern).Groups[1].Value;
-            PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!");
+            var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
+            if (!noShowEcho)
+                PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!");
         }
 
         private static string? GetClaimAmount(string pageContent)
         {
-            var match = Regex.Match(pageContent, ClaimPattern);
+            var match = Regex.Match(pageContent, PluginInfo.ClaimPattern);
             return match.Success ? match.Groups[1].Value : null;
         }
 
@@ -135,15 +184,17 @@ namespace SimuCoin
                     new KeyValuePair<string, string>("itemSearch", "")
                 });
 
-                var response = await httpClient.PostAsync("https://store.play.net/Store/ClaimReward", formContent);
+                var response = await httpClient.PostAsync(PluginInfo.ClaimUrl, formContent);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var claimPageContent = await response.Content.ReadAsStringAsync();
-
-                    var match = Regex.Match(claimPageContent, @"<h1 class=""RewardMessage centered sans_serif"">Claimed (\d+) SimuCoin reward!</h1>");
+                    Match matchn = Regex.Match(claimPageContent, PluginInfo.NamePattern);
+                    var match = Regex.Match(claimPageContent, PluginInfo.RewardPattern);
                     if (match.Success)
                     {
+                        if (noShowEcho)
+                            PluginInfo.Coin?.EchoText("\r\nAccount: " + matchn.Groups[1].Value);
                         var claimAmount = match.Groups[1].Value;
                         PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
                         UpdateBalance(claimPageContent);
@@ -158,7 +209,7 @@ namespace SimuCoin
                 else
                 {
                     // handle error response
-                    PluginInfo.Coin?.EchoText("Request failed with status code: " + response.StatusCode);
+                    PluginInfo.Coin?.EchoText("Request failed: " + response.StatusCode);
                     return false;
                 }
             }
@@ -171,7 +222,7 @@ namespace SimuCoin
 
         private static async Task SignOut()
         {
-            string url = "https://store.play.net/Account/SignOut";
+            string url = PluginInfo.SignOutUrl;
 
             try
             {

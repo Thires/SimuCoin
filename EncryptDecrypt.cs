@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace SimuCoin
+namespace SimuCoins
 {
     public class EncryptDecrypt
     {
