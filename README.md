@@ -6,10 +6,10 @@ Plugin for Genie frontend to log into simucoins to get current amount, time left
 Commands:<br>
 /sc or /simucoin will open the GUI.<br>
 /sc username password or /simucoin username password will automatically login using the GUI.<br>
-/sct username password will login without the GUI, echoing to game window.
+/sct username password will login without the GUI, echoing to game window.<br>
 /sca or /scall logs into all accounts saved within the saved xml, echos to game window
 
-Can save multiple usernames/passwords, they will be stored in SimuCoins.xml.
+Can save multiple usernames/passwords, they will be stored in SimuCoins.xml.<br>
 The passwords are encrypted with a randomly generated key each time it is saved.
 
 When window is open, can hit esc key to close it or use window close button.
