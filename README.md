@@ -1,7 +1,7 @@
 ![image](https://user-images.githubusercontent.com/28072996/230968213-94371d57-4573-4d6f-b7f5-7171d18985a4.png)
 
-# SimuCoin
-Plugin for Genie frontend to log into simucoin to get current amount, time left or to claim
+# SimuCoins
+Plugin for Genie frontend to log into simucoins to get current amount, time left or to claim
 
 Commands:<br>
 /sc or /simucoin will open the GUI.<br>
