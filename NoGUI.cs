@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -72,12 +71,12 @@ namespace SimuCoins
         {
             noShowEcho = true;
             var users = LoadXML();
-
+            PluginInfo.Coin?.EchoText("Checking Account(s)...\r\n");
             foreach (var (username, password) in users)
             {
                 await Login(username, EncryptDecrypt.Decrypt(password));
             }
-            PluginInfo.Coin?.EchoText("\r\nAccount(s) Checked...");
+            PluginInfo.Coin?.EchoText("\r\nAccount(s) Checked...\r\n");
         }
 
         public void NoGUILogin(string username, string password)
