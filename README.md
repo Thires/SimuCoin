@@ -10,7 +10,7 @@ Commands:<br>
 /sca or /scall logs into all accounts saved within the saved xml, echos to game window
 
 Can save multiple usernames/passwords, they will be stored in SimuCoins.xml.<br>
-The passwords are encrypted with a randomly generated key each time it is saved.
+The passwords are randomly encrypted each time it is saved.
 
 When window is open, can hit esc key to close it or use window close button.
 
@@ -18,4 +18,4 @@ The clear button will clear the fields currently on the GUI, remove button will 
 
 If simucoins are available to be claimed, they will be claimed when you login with the plugin.
 
-This #trigger {^Welcome to DragonRealms} {#put /sca} or #put /scall can be used so when logging in it will check any saved accounts in the xml.
+This #trigger {^Welcome to DragonRealms \(\w+\) v\d+\.\d+$} {#put /sca} or #put /scall can be used so when logging in it will check any saved accounts in the xml.
