@@ -63,9 +63,11 @@ namespace SimuCoins
             return text;
         }
 
-        public string ParseInput(string text)
+        public string? ParseInput(string text)
         {
-            if (Regex.IsMatch(text, @"^/sct($|\s)", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(text, @"(^/sct|sctext|sc|scg|simucoins|scall|sca)(\shelp)$", RegexOptions.IgnoreCase))
+                Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n");
+            else if (Regex.IsMatch(text, @"^/sct($|\s)|^/sctext($|\s)", RegexOptions.IgnoreCase))
             {
                 var arguments = text.Split(' ');
                 if (arguments.Length == 3)
@@ -74,16 +76,16 @@ namespace SimuCoins
                 }
                 else
                 {
-                    Coin?.EchoText("Usage: /sct <username> <password>");
+                    Coin?.EchoText("Usage: /sct <username> <password> or /sctext <username> <password>");
                 }
             }
-            else if (Regex.IsMatch(text, @"^/simucoins($|\s)|^/sc($|\s)|^/scg($|\s)", RegexOptions.IgnoreCase))
+            else if (Regex.IsMatch(text, @"^/simucoins($|\s)|^/sc($|\s)", RegexOptions.IgnoreCase))
             {
                 Show();
                 var arguments = text.Split(' ');
                 if (arguments.Length == 1)
                 {
-                    return string.Empty;
+                    return text;
                 }
                 else if (arguments.Length == 3)
                 {
