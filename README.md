@@ -6,8 +6,10 @@ Plugin for Genie frontend to log into simucoins to get current amount, time left
 Commands:<br>
 /sc or /simucoin will open the GUI.<br>
 /sc username password or /simucoin username password will automatically login using the GUI.<br>
-/sct username password will login without the GUI, echoing to game window.<br>
+/sct or /sctext username password will login without the GUI, echoing to game window.<br>
 /sca or /scall logs into all accounts saved within the saved xml, echos to game window
+
+All commands with help after will display info echoed to game window, /sc help and such.
 
 Can save multiple usernames/passwords, they will be stored in SimuCoins.xml.<br>
 The passwords are randomly encrypted each time it is saved.
@@ -18,4 +20,4 @@ The clear button will clear the fields currently on the GUI, remove button will 
 
 If simucoins are available to be claimed, they will be claimed when you login with the plugin.
 
-This #trigger {^Welcome to DragonRealms \(\w+\) v\d+\.\d+$} {#put /sca} or #put /scall can be used so when logging in it will check any saved accounts in the xml.
+This #trigger {^Welcome to DragonRealms \(\w+\) v\d+\.\d+$} {#put /sca} or {#put /scall} can be used so when logging in it will check any saved accounts in the xml.
