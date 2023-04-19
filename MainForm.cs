@@ -272,7 +272,7 @@ namespace SimuCoins
                 {
                     var claimPageContent = await response.Content.ReadAsStringAsync();
 
-                    var match = Regex.Match(claimPageContent, PluginInfo.RewardPattern);
+                    var match = Regex.Match(claimPageContent, @"<h1 class=""RewardMessage centered sans_serif"">Claimed (\d+) SimuCoin reward!</h1>");
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
