@@ -17,8 +17,8 @@ namespace SimuCoins
 
         public const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
         public const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
-        public const string NamePattern = @"<div\s+class=""login\s+sans_serif"">\s*(\S+)\s+\|\s+<a\s+href=""/Account/SignOut"">SIGN OUT</a>\s*</div>";
-        public const string RewardPattern = @"<h1 class=""RewardMessage centered sans_serif"">Claimed (\d+) SimuCoins reward!</h1>";
+        public const string NamePattern = "<div\\s+class=\"login\\s+sans_serif\">\\s*(\\S+)\\s+|\\s+<a\\s+href=\"/Account/SignOut\">SIGN OUT</a>\\s*</div>";
+        public const string RewardPattern = "<h1 class=\"RewardMessage centered sans_serif\">Claimed (\\d+) SimuCoins reward!</h1>";
         public const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
 
         private bool _enabled = true;

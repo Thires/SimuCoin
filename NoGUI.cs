@@ -137,7 +137,9 @@ namespace SimuCoins
                 var claimAmount = GetClaimAmount(pageContent);
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
-                    UpdateBalance(pageContent);
+                    if (noShowEcho)
+                        PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
+                    //UpdateBalance(pageContent);
                     await ClaimReward();
                 }
                 else
@@ -189,12 +191,9 @@ namespace SimuCoins
                 if (response.IsSuccessStatusCode)
                 {
                     var claimPageContent = await response.Content.ReadAsStringAsync();
-                    Match matchn = Regex.Match(claimPageContent, PluginInfo.NamePattern);
                     var match = Regex.Match(claimPageContent, PluginInfo.RewardPattern);
                     if (match.Success)
                     {
-                        if (noShowEcho)
-                            PluginInfo.Coin?.EchoText("\r\nAccount: " + matchn.Groups[1].Value);
                         var claimAmount = match.Groups[1].Value;
                         PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
                         UpdateBalance(claimPageContent);
