@@ -139,7 +139,7 @@ namespace SimuCoins
                 {
                     if (noShowEcho)
                         PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
-                    //UpdateBalance(pageContent);
+                    UpdateBalance(pageContent);
                     await ClaimReward();
                 }
                 else
