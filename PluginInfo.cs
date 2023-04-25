@@ -15,10 +15,10 @@ namespace SimuCoins
         public const string SignOutUrl = "https://store.play.net/Account/SignOut";
         public const string StoreUrl = "https://store.play.net/";
 
-        public const string BalancePattern = "<span class=\"blue\" id=\"side_balance\">(.*?)</span>";
+        public const string BalancePattern = "<h1 class=\"balance centered sans_serif\">You Have <span class=\"blue\">(\\d+)</span><img src=\"https://www.play.net/images/layout/store/icons/sc_icon_28_w.png\">!</h1>";
         public const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
         public const string NamePattern = "<div\\s+class=\"login\\s+sans_serif\">\\s*(\\S+)\\s+|\\s+<a\\s+href=\"/Account/SignOut\">SIGN OUT</a>\\s*</div>";
-        public const string TimePattern = "<h1\\s+class=\"RewardMessage\\s+centered\\s+sans_serif\">Next Subscription Bonus in\\s+(.*?)</h1>";
+        public const string TimePattern = "<h1 class=\"RewardMessage centered sans_serif\">(.*?)</h1>";
 
         private bool _enabled = true;
 

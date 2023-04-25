@@ -159,7 +159,7 @@ namespace SimuCoins
         {
             var time = Regex.Match(pageContent, PluginInfo.TimePattern).Groups[1].Value;
             if (!noShowEcho)
-                PluginInfo.Coin?.EchoText($"Next Subscription Bonus in {time}");
+                PluginInfo.Coin?.EchoText(time);
         }
 
         private static void UpdateBalance(string pageContent)

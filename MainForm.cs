@@ -233,7 +233,7 @@ namespace SimuCoins
         private void UpdateTimeLBL(string pageContent)
         {
             var time = Regex.Match(pageContent, PluginInfo.TimePattern).Groups[1].Value;
-            timeLBL.Text = $"Next Subscription Bonus in {time}";
+            timeLBL.Text = time;
         }
 
         private void UpdateBalanceLBL(string pageContent)
@@ -271,7 +271,6 @@ namespace SimuCoins
                 if (response.IsSuccessStatusCode)
                 {
                     var claimPageContent = await response.Content.ReadAsStringAsync();
-
                     var match = Regex.Match(claimPageContent, @"<h1 class=""RewardMessage centered sans_serif"">Claimed (\d+) SimuCoin reward!</h1>");
                     if (match.Success)
                     {
@@ -364,8 +363,8 @@ namespace SimuCoins
         private void LoginBTN_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            coinsLBL.Text = "You Have";
-            timeLBL.Text = "Next Subscription Bonus in";
+            coinsLBL.Text = "";
+            timeLBL.Text = "";
             iconPIC.Visible = false;
             exclamationLBL.Visible = false;
             this.ResumeLayout();
