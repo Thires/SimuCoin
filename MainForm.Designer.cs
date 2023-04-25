@@ -74,7 +74,7 @@
             coinsLBL.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             coinsLBL.ForeColor = Color.White;
             coinsLBL.ImageAlign = ContentAlignment.MiddleRight;
-            coinsLBL.Location = new Point(72, 26);
+            coinsLBL.Location = new Point(59, 25);
             coinsLBL.Name = "coinsLBL";
             coinsLBL.Size = new Size(107, 25);
             coinsLBL.TabIndex = 8;
@@ -142,7 +142,7 @@
             iconPIC.BackColor = Color.Transparent;
             iconPIC.BackgroundImageLayout = ImageLayout.Stretch;
             iconPIC.Image = Properties.Resources.icon;
-            iconPIC.Location = new Point(192, 30);
+            iconPIC.Location = new Point(179, 29);
             iconPIC.Name = "iconPIC";
             iconPIC.Size = new Size(16, 16);
             iconPIC.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -166,7 +166,7 @@
             exclamationLBL.BackColor = Color.Transparent;
             exclamationLBL.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
             exclamationLBL.ForeColor = Color.White;
-            exclamationLBL.Location = new Point(206, 22);
+            exclamationLBL.Location = new Point(193, 21);
             exclamationLBL.Name = "exclamationLBL";
             exclamationLBL.Size = new Size(20, 29);
             exclamationLBL.TabIndex = 9;
