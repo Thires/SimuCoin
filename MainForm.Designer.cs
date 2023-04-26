@@ -40,7 +40,6 @@
             UserNameCB = new ComboBox();
             exclamationLBL = new Label();
             RemoveBTN = new Button();
-            tempLBL = new Label();
             ((System.ComponentModel.ISupportInitialize)iconPIC).BeginInit();
             SuspendLayout();
             // 
@@ -177,23 +176,13 @@
             // RemoveBTN
             // 
             RemoveBTN.FlatAppearance.BorderSize = 0;
-            RemoveBTN.Location = new Point(124, 105);
+            RemoveBTN.Location = new Point(126, 105);
             RemoveBTN.Name = "RemoveBTN";
             RemoveBTN.Size = new Size(97, 24);
             RemoveBTN.TabIndex = 5;
             RemoveBTN.Text = "Remove";
             RemoveBTN.UseVisualStyleBackColor = true;
             RemoveBTN.Click += RemoveBTN_Click;
-            // 
-            // tempLBL
-            // 
-            tempLBL.AutoSize = true;
-            tempLBL.BackColor = Color.Transparent;
-            tempLBL.ForeColor = Color.White;
-            tempLBL.Location = new Point(9, 27);
-            tempLBL.Name = "tempLBL";
-            tempLBL.Size = new Size(0, 16);
-            tempLBL.TabIndex = 22;
             // 
             // MainForm
             // 
@@ -203,7 +192,6 @@
             BackgroundImage = Properties.Resources.background;
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(345, 162);
-            Controls.Add(tempLBL);
             Controls.Add(RemoveBTN);
             Controls.Add(exclamationLBL);
             Controls.Add(UserNameCB);
@@ -248,6 +236,5 @@
         private ComboBox UserNameCB;
         private Label exclamationLBL;
         private Button RemoveBTN;
-        private Label tempLBL;
     }
 }
