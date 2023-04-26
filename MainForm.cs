@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -45,6 +46,7 @@ namespace SimuCoins
 
             timeLBL.Text = "";
             coinsLBL.Text = "";
+            tempLBL.Text = "";
 
             xmlPath = Path.Combine(PluginInfo.Coin?.get_Variable("PluginPath") ?? "", "SimuCoins.xml");
 
@@ -180,7 +182,6 @@ namespace SimuCoins
                 response = await httpClient.PostAsync(url, content); // Send POST request to the login page
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
-
                 if (response.RequestMessage?.RequestUri?.ToString() == PluginInfo.StoreUrl) // Check if the login was successful
                 {
                     statusLBL.Text = "Login Successful";
@@ -193,6 +194,8 @@ namespace SimuCoins
                 }
                 else
                 {
+                    timeLBL.Text = "There is a problem with your account.";
+                    tempLBL.Text = "Please contact customer service for assistance.";
                     statusLBL.Text = "Incorrect Username and/or Password";
                 }
                 UserNameCB.Enabled = true;
@@ -345,6 +348,7 @@ namespace SimuCoins
             ClearBTN.Enabled = false;
             timeLBL.Text = "";
             coinsLBL.Text = "";
+            tempLBL.Text = "";
             iconPIC.Visible = false;
             UserNameCB.Text = "";
             PasswordTB.Text = "";
@@ -365,6 +369,7 @@ namespace SimuCoins
             this.SuspendLayout();
             coinsLBL.Text = "";
             timeLBL.Text = "";
+            tempLBL.Text = "";
             iconPIC.Visible = false;
             exclamationLBL.Visible = false;
             this.ResumeLayout();
