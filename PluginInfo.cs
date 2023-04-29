@@ -1,5 +1,6 @@
 ﻿using GeniePlugin.Interfaces;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace SimuCoins
 {
@@ -65,13 +66,18 @@ namespace SimuCoins
         public string? ParseInput(string text)
         {
             if (Regex.IsMatch(text, @"(^/sct|sctext|sc|scg|simucoins|scall|sca)(\shelp)$", RegexOptions.IgnoreCase))
+            {
                 Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n");
+                return "";
+            }
+
             else if (Regex.IsMatch(text, @"^/sct($|\s)|^/sctext($|\s)", RegexOptions.IgnoreCase))
             {
                 var arguments = text.Split(' ');
                 if (arguments.Length == 3)
                 {
                     noForm?.NoGUILogin(arguments[1], arguments[2]);
+                    return "";
                 }
                 else
                 {
@@ -84,7 +90,7 @@ namespace SimuCoins
                 var arguments = text.Split(' ');
                 if (arguments.Length == 1)
                 {
-                    return text;
+                    return "";
                 }
                 else if (arguments.Length == 3)
                 {
@@ -93,6 +99,7 @@ namespace SimuCoins
                         form.UserName = arguments[1];
                         form.Password = arguments[2];
                         form.GUILogin();
+                        return "";
                     }
                 }
                 else
@@ -103,6 +110,7 @@ namespace SimuCoins
             else if (Regex.IsMatch(text, @"^/scall($|\s)|^/sca($|\s)", RegexOptions.IgnoreCase))
             {
                 noForm?.DoAll();
+                return "";
             }
             return text;
         }
