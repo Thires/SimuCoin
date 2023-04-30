@@ -33,7 +33,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0";
+        public string Version => "2.0.1";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
@@ -70,28 +70,20 @@ namespace SimuCoins
                 Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n");
                 return "";
             }
-
             else if (Regex.IsMatch(text, @"^/sct($|\s)|^/sctext($|\s)", RegexOptions.IgnoreCase))
             {
                 var arguments = text.Split(' ');
                 if (arguments.Length == 3)
-                {
                     noForm?.NoGUILogin(arguments[1], arguments[2]);
-                    return "";
-                }
                 else
-                {
                     Coin?.EchoText("Usage: /sct <username> <password> or /sctext <username> <password>");
-                }
+                return "";
             }
             else if (Regex.IsMatch(text, @"^/simucoins($|\s)|^/sc($|\s)", RegexOptions.IgnoreCase))
             {
                 Show();
                 var arguments = text.Split(' ');
-                if (arguments.Length == 1)
-                {
-                    return "";
-                }
+                if (arguments.Length == 1) {}
                 else if (arguments.Length == 3)
                 {
                     if (form != null)
@@ -99,13 +91,13 @@ namespace SimuCoins
                         form.UserName = arguments[1];
                         form.Password = arguments[2];
                         form.GUILogin();
-                        return "";
                     }
                 }
                 else
                 {
                     Coin?.EchoText("Usage: /simucoins or /sc <username> <password>");
                 }
+                return "";
             }
             else if (Regex.IsMatch(text, @"^/scall($|\s)|^/sca($|\s)", RegexOptions.IgnoreCase))
             {

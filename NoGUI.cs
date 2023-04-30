@@ -71,7 +71,6 @@ namespace SimuCoins
         {
             noShowEcho = true;
             var users = LoadXML();
-            await Task.Delay(TimeSpan.FromSeconds(1));
             PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...\r\n");
             foreach (var (username, password) in users)
             {
