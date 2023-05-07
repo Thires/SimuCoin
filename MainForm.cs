@@ -159,6 +159,7 @@ namespace SimuCoins
             try
             {
                 SuspendLayout();
+                statusLBL.Text = "Status";
                 UserNameCB.Enabled = false;
                 PasswordTB.Enabled = false;
                 LoginBTN.Enabled = false;
@@ -183,7 +184,7 @@ namespace SimuCoins
 
                 if (response.RequestMessage?.RequestUri?.ToString() == PluginInfo.StoreUrl) // Check if the login was successful
                 {
-                    statusLBL.Text = "Login Successful";
+                    statusLBL.Text = $"Login Successful for {username}";
                     await UpdateBalance();
                     SaveXML();
                     if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
