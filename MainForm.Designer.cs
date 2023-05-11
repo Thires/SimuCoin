@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             LoginBTN = new Button();
             ClearBTN = new Button();
             coinsLBL = new Label();
@@ -207,6 +208,7 @@
             DoubleBuffered = true;
             Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MaximizeBox = false;
             MinimizeBox = false;
