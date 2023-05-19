@@ -37,12 +37,12 @@ namespace SimuCoins
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
 
-            ClearBTN.GotFocus += Button_GotFocus;
-            ClearBTN.LostFocus += Button_LostFocus;
-            RemoveBTN.GotFocus += Button_GotFocus;
-            RemoveBTN.LostFocus += Button_LostFocus;
-            LoginBTN.GotFocus += Button_GotFocus;
-            LoginBTN.LostFocus += Button_LostFocus;
+            List<Button> buttons = new() { ClearBTN, RemoveBTN, LoginBTN };
+            foreach (Button button in buttons)
+            {
+                button.GotFocus += Button_GotFocus;
+                button.LostFocus += Button_LostFocus;
+            }
 
             timeLBL.Text = "";
             coinsLBL.Text = "";
@@ -111,17 +111,13 @@ namespace SimuCoins
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlPath);
-            if (xmlDocument.DocumentElement != null)
+
+            // Refactor the code that searches for user nodes
+            var userNodes = GetUserNodes(xmlDocument);
+            foreach (var userName in userNodes.Select(node => node.Attributes?.GetNamedItem("username")?.Value))
             {
-                foreach (var userName in from XmlNode node in xmlDocument.DocumentElement.ChildNodes
-                                         let userName = node.Attributes?.GetNamedItem("username")?.Value
-                                         let password = node.Attributes?.GetNamedItem("password")?.Value
-                                         where !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password)
-                                         select userName)
-                {
-                    // Add the username to the combo box
-                    UserNameCB.Items.Add(userName.ToUpper());
-                }
+                // Add the username to the combo box
+                UserNameCB.Items.Add(userName?.ToUpper());
             }
         }
 
@@ -134,16 +130,38 @@ namespace SimuCoins
                 // Load the password for the selected user from the XML file
                 var xmlDocument = new XmlDocument();
                 xmlDocument.Load(xmlPath);
-                if (xmlDocument.DocumentElement != null)
+
+                // Refactor the code that searches for user nodes
+                var userNodes = GetUserNodes(xmlDocument);
+                foreach (var password in userNodes.Where(node => node.Attributes?.GetNamedItem("username")?.Value == selectedItem)
+                                              .Select(node => node.Attributes?.GetNamedItem("password")?.Value))
                 {
-                    foreach (var password in from XmlNode node in xmlDocument.DocumentElement.ChildNodes
-                                             let userName = node.Attributes?.GetNamedItem("username")?.Value
-                                             let password = node.Attributes?.GetNamedItem("password")?.Value
-                                             where userName == selectedItem && !string.IsNullOrEmpty(password)
-                                             select password)
+                    if (password != null)
                     {
                         PasswordTB.Text = EncryptDecrypt.Decrypt(password);
                         break;
+                    }
+                }
+            }
+        }
+
+        // Extract the code that searches for user nodes into a separate method
+        private static IEnumerable<XmlNode> GetUserNodes(XmlDocument xmlDocument)
+        {
+            if (xmlDocument.DocumentElement != null)
+            {
+                foreach (XmlNode node in xmlDocument.DocumentElement.ChildNodes)
+                {
+                    // Add a null check before accessing the Attributes property
+                    if (node.Attributes != null)
+                    {
+                        var userName = node.Attributes.GetNamedItem("username")?.Value;
+                        var password = node.Attributes.GetNamedItem("password")?.Value;
+
+                        if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
+                        {
+                            yield return node;
+                        }
                     }
                 }
             }
@@ -246,7 +264,7 @@ namespace SimuCoins
             iconPIC.Visible = true;
             iconPIC.Image = Properties.Resources.icon;
             iconPIC.Location = new Point(coinsLBL.Right - 5, 30);
-            exclamationLBL.Location = new Point(iconPIC.Right - 5, 22);
+            exclamationLBL.Location = new Point(iconPIC.Right - 2, 22);
             exclamationLBL.Visible = true;
             this.ResumeLayout();
         }

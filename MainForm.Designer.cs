@@ -48,7 +48,7 @@
             // 
             LoginBTN.FlatAppearance.BorderSize = 0;
             LoginBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            LoginBTN.Location = new Point(241, 105);
+            LoginBTN.Location = new Point(246, 105);
             LoginBTN.Name = "LoginBTN";
             LoginBTN.Size = new Size(97, 24);
             LoginBTN.TabIndex = 3;
@@ -60,7 +60,7 @@
             // 
             ClearBTN.FlatAppearance.BorderSize = 0;
             ClearBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            ClearBTN.Location = new Point(9, 105);
+            ClearBTN.Location = new Point(3, 105);
             ClearBTN.Name = "ClearBTN";
             ClearBTN.Size = new Size(97, 24);
             ClearBTN.TabIndex = 4;
@@ -75,7 +75,7 @@
             coinsLBL.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             coinsLBL.ForeColor = Color.White;
             coinsLBL.ImageAlign = ContentAlignment.MiddleRight;
-            coinsLBL.Location = new Point(58, 25);
+            coinsLBL.Location = new Point(47, 27);
             coinsLBL.Name = "coinsLBL";
             coinsLBL.Size = new Size(107, 25);
             coinsLBL.TabIndex = 8;
@@ -87,15 +87,15 @@
             timeLBL.BackColor = Color.Transparent;
             timeLBL.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             timeLBL.ForeColor = Color.White;
-            timeLBL.Location = new Point(9, 9);
+            timeLBL.Location = new Point(3, 9);
             timeLBL.Name = "timeLBL";
-            timeLBL.Size = new Size(191, 16);
+            timeLBL.Size = new Size(71, 16);
             timeLBL.TabIndex = 7;
-            timeLBL.Text = "Next Subscription Bonus in";
+            timeLBL.Text = "Time Info";
             // 
             // PasswordTB
             // 
-            PasswordTB.Location = new Point(192, 78);
+            PasswordTB.Location = new Point(197, 78);
             PasswordTB.Name = "PasswordTB";
             PasswordTB.PasswordChar = '*';
             PasswordTB.Size = new Size(146, 22);
@@ -108,7 +108,7 @@
             statusLBL.BackColor = Color.Transparent;
             statusLBL.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             statusLBL.ForeColor = Color.White;
-            statusLBL.Location = new Point(9, 136);
+            statusLBL.Location = new Point(3, 136);
             statusLBL.Name = "statusLBL";
             statusLBL.Size = new Size(50, 16);
             statusLBL.TabIndex = 6;
@@ -120,7 +120,7 @@
             usernameLabel.BackColor = Color.Transparent;
             usernameLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             usernameLabel.ForeColor = Color.White;
-            usernameLabel.Location = new Point(9, 58);
+            usernameLabel.Location = new Point(3, 58);
             usernameLabel.Name = "usernameLabel";
             usernameLabel.Size = new Size(122, 16);
             usernameLabel.TabIndex = 10;
@@ -132,7 +132,7 @@
             passwordLabel.BackColor = Color.Transparent;
             passwordLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             passwordLabel.ForeColor = Color.White;
-            passwordLabel.Location = new Point(192, 58);
+            passwordLabel.Location = new Point(197, 58);
             passwordLabel.Name = "passwordLabel";
             passwordLabel.Size = new Size(75, 16);
             passwordLabel.TabIndex = 11;
@@ -143,7 +143,7 @@
             iconPIC.BackColor = Color.Transparent;
             iconPIC.BackgroundImageLayout = ImageLayout.Stretch;
             iconPIC.Image = Properties.Resources.icon;
-            iconPIC.Location = new Point(179, 29);
+            iconPIC.Location = new Point(168, 31);
             iconPIC.Name = "iconPIC";
             iconPIC.Size = new Size(16, 16);
             iconPIC.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -154,7 +154,7 @@
             // UserNameCB
             // 
             UserNameCB.FormattingEnabled = true;
-            UserNameCB.Location = new Point(9, 77);
+            UserNameCB.Location = new Point(3, 77);
             UserNameCB.Name = "UserNameCB";
             UserNameCB.Size = new Size(146, 24);
             UserNameCB.TabIndex = 1;
@@ -167,7 +167,7 @@
             exclamationLBL.BackColor = Color.Transparent;
             exclamationLBL.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
             exclamationLBL.ForeColor = Color.White;
-            exclamationLBL.Location = new Point(193, 21);
+            exclamationLBL.Location = new Point(182, 23);
             exclamationLBL.Name = "exclamationLBL";
             exclamationLBL.Size = new Size(20, 29);
             exclamationLBL.TabIndex = 9;
@@ -189,9 +189,10 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.Control;
             BackgroundImage = Properties.Resources.background;
-            BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(345, 162);
             Controls.Add(RemoveBTN);
             Controls.Add(exclamationLBL);
