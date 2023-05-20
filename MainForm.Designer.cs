@@ -48,7 +48,7 @@
             // 
             LoginBTN.FlatAppearance.BorderSize = 0;
             LoginBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            LoginBTN.Location = new Point(246, 105);
+            LoginBTN.Location = new Point(241, 105);
             LoginBTN.Name = "LoginBTN";
             LoginBTN.Size = new Size(97, 24);
             LoginBTN.TabIndex = 3;
@@ -60,7 +60,7 @@
             // 
             ClearBTN.FlatAppearance.BorderSize = 0;
             ClearBTN.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            ClearBTN.Location = new Point(3, 105);
+            ClearBTN.Location = new Point(6, 105);
             ClearBTN.Name = "ClearBTN";
             ClearBTN.Size = new Size(97, 24);
             ClearBTN.TabIndex = 4;
@@ -95,7 +95,7 @@
             // 
             // PasswordTB
             // 
-            PasswordTB.Location = new Point(197, 78);
+            PasswordTB.Location = new Point(192, 78);
             PasswordTB.Name = "PasswordTB";
             PasswordTB.PasswordChar = '*';
             PasswordTB.Size = new Size(146, 22);
@@ -120,7 +120,7 @@
             usernameLabel.BackColor = Color.Transparent;
             usernameLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             usernameLabel.ForeColor = Color.White;
-            usernameLabel.Location = new Point(3, 58);
+            usernameLabel.Location = new Point(6, 58);
             usernameLabel.Name = "usernameLabel";
             usernameLabel.Size = new Size(122, 16);
             usernameLabel.TabIndex = 10;
@@ -132,7 +132,7 @@
             passwordLabel.BackColor = Color.Transparent;
             passwordLabel.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             passwordLabel.ForeColor = Color.White;
-            passwordLabel.Location = new Point(197, 58);
+            passwordLabel.Location = new Point(192, 58);
             passwordLabel.Name = "passwordLabel";
             passwordLabel.Size = new Size(75, 16);
             passwordLabel.TabIndex = 11;
@@ -154,7 +154,7 @@
             // UserNameCB
             // 
             UserNameCB.FormattingEnabled = true;
-            UserNameCB.Location = new Point(3, 77);
+            UserNameCB.Location = new Point(6, 77);
             UserNameCB.Name = "UserNameCB";
             UserNameCB.Size = new Size(146, 24);
             UserNameCB.TabIndex = 1;
@@ -177,7 +177,7 @@
             // RemoveBTN
             // 
             RemoveBTN.FlatAppearance.BorderSize = 0;
-            RemoveBTN.Location = new Point(126, 105);
+            RemoveBTN.Location = new Point(124, 105);
             RemoveBTN.Name = "RemoveBTN";
             RemoveBTN.Size = new Size(97, 24);
             RemoveBTN.TabIndex = 5;
@@ -213,6 +213,7 @@
             KeyPreview = true;
             MaximizeBox = false;
             MinimizeBox = false;
+            MinimumSize = new Size(361, 194);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SimuCoins";
