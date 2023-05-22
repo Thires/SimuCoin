@@ -71,12 +71,12 @@ namespace SimuCoins
         {
             noShowEcho = true;
             var users = LoadXML();
-            PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...\r\n");
+            PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...");
             foreach (var (username, password) in users)
             {
                 await Login(username, EncryptDecrypt.Decrypt(password));
             }
-            PluginInfo.Coin?.EchoText("\r\nAccount(s) Checked...\r\n");
+            PluginInfo.Coin?.EchoText("Account(s) Checked...\r\n");
         }
 
         public void NoGUILogin(string username, string password)
