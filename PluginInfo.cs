@@ -33,7 +33,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0.3";
+        public string Version => "2.0.4";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 

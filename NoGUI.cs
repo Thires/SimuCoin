@@ -71,7 +71,7 @@ namespace SimuCoins
         {
             noShowEcho = true;
             var users = LoadXML();
-            PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...");
+            PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...\r\n");
             foreach (var (username, password) in users)
             {
                 await Login(username, EncryptDecrypt.Decrypt(password));
@@ -132,12 +132,12 @@ namespace SimuCoins
 
                 Match match = Regex.Match(pageContent, PluginInfo.NamePattern);
                 if (!noShowEcho)
-                    PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
+                    PluginInfo.Coin?.EchoText("\n\rAccount: " + match.Groups[1].Value);
                 var claimAmount = GetClaimAmount(pageContent);
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
                     if (noShowEcho)
-                        PluginInfo.Coin?.EchoText("\r\nAccount: " + match.Groups[1].Value);
+                        PluginInfo.Coin?.EchoText("Account: " + match.Groups[1].Value);
                     UpdateBalance(pageContent);
                     await ClaimReward();
                 }
@@ -165,7 +165,7 @@ namespace SimuCoins
         {
             var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
             if (!noShowEcho)
-                PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!");
+                PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!\r\n");
         }
 
         private static string? GetClaimAmount(string pageContent)
@@ -194,7 +194,7 @@ namespace SimuCoins
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
-                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
+                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins\r\n");
                         UpdateBalance(claimPageContent);
                         return true;
                     }
