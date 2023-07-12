@@ -33,7 +33,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0.4";
+        public string Version => "2.0.5";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
@@ -67,7 +67,7 @@ namespace SimuCoins
         {
             if (Regex.IsMatch(text, @"(^/sct|sctext|sc|scg|simucoins|scall|sca)(\shelp)$", RegexOptions.IgnoreCase))
             {
-                Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n");
+                Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n\r\n#trigger {^Welcome to DragonRealms \\(\\w+\\) v\\d+\\.\\d+$} {#put /sca}\r\n#trigger save\r\n");
                 return "";
             }
             else if (Regex.IsMatch(text, @"^/sct($|\s)|^/sctext($|\s)", RegexOptions.IgnoreCase))
