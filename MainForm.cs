@@ -14,6 +14,8 @@ namespace SimuCoins
 
         private bool isClosingDueToEscKey = false;
 
+        private bool isClaimed = false;
+
         private static string xmlPath = Application.StartupPath;
 
         public string UserName
@@ -183,6 +185,7 @@ namespace SimuCoins
                 LoginBTN.Enabled = false;
                 RemoveBTN.Enabled = false;
                 ClearBTN.Enabled = false;
+                isClaimed = false;
 
                 string url = PluginInfo.LoginUrl; // URL for the login page
 
@@ -260,7 +263,10 @@ namespace SimuCoins
         {
             this.SuspendLayout();
             var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
-            coinsLBL.Text = $"You Have {balance}";
+            if (isClaimed)
+                coinsLBL.Text = $"You Now Have {balance}";
+            else
+                coinsLBL.Text = $"You Have {balance}";
             iconPIC.Visible = true;
             iconPIC.Image = Properties.Resources.icon;
             iconPIC.Location = new Point(coinsLBL.Right - 5, 30);
@@ -297,6 +303,7 @@ namespace SimuCoins
                         var claimAmount = match.Groups[1].Value;
                         timeLBL.Text = $"Subscription Reward: {claimAmount} Free SimuCoins";
                         statusLBL.Text = $"Claimed {claimAmount} SimuCoins";
+                        isClaimed = true;
                         UpdateBalanceLBL(claimPageContent);
                         return true;
                     }
