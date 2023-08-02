@@ -33,7 +33,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0.6";
+        public string Version => "2.0.7";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
@@ -43,6 +43,8 @@ namespace SimuCoins
         {
             coin = host;
             noForm = new NoGUI();
+
+            _ = PreloadBrowser();
         }
 
         public void Show()
@@ -113,6 +115,16 @@ namespace SimuCoins
 
         public void ParentClosing()
         {
+        }
+
+        private static async Task PreloadBrowser()
+        {
+            using HttpClient client = new();
+            HttpResponseMessage response = await client.GetAsync(BalanceUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                _ = await response.Content.ReadAsStringAsync();
+            }
         }
     }
 }
