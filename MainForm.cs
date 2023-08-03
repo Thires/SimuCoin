@@ -189,7 +189,7 @@ namespace SimuCoins
 
                 string url = PluginInfo.LoginUrl; // URL for the login page
 
-                var response = await httpClient.GetAsync(url); // Send GET request to the login page
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
                 string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
 

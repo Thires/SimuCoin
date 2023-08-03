@@ -1,4 +1,5 @@
 ﻿using GeniePlugin.Interfaces;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -9,6 +10,8 @@ namespace SimuCoins
         private static IHost? coin;
         private MainForm? form;
         private NoGUI? noForm;
+
+        private static readonly HttpClient httpClient = new();
 
         public const string BalanceUrl = "https://store.play.net/store/purchase/dr";
         public const string ClaimUrl = "https://store.play.net/Store/ClaimReward";
@@ -44,7 +47,8 @@ namespace SimuCoins
             coin = host;
             noForm = new NoGUI();
 
-            _ = PreloadBrowser();
+            httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
 
         public void Show()
@@ -115,16 +119,6 @@ namespace SimuCoins
 
         public void ParentClosing()
         {
-        }
-
-        private static async Task PreloadBrowser()
-        {
-            using HttpClient client = new();
-            HttpResponseMessage response = await client.GetAsync(BalanceUrl);
-            if (response.IsSuccessStatusCode)
-            {
-                _ = await response.Content.ReadAsStringAsync();
-            }
         }
     }
 }
