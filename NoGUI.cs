@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -8,30 +7,13 @@ namespace SimuCoins
     public class NoGUI : HttpClient, IDisposable
     {
         // Create an HttpClient to handle HTTP requests and responses
-        // Create a CookieContainer to store cookies
-        private static readonly HttpClientHandler httpClientHandler = new() { CookieContainer = new() };
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new() });
 
-        private bool disposed = false;
         private static bool noShowEcho = false;
 
-
-        protected override void Dispose(bool disposing)
+        public NoGUI()
         {
-            if (disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                httpClient.Dispose();
-                httpClientHandler.Dispose();
-            }
-
-            disposed = true;
-
-            base.Dispose(disposing);
+            httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
 
         private static List<(string, string)> LoadXML()
@@ -67,7 +49,7 @@ namespace SimuCoins
             return users;
         }
 
-        public async Task DoAll()
+        internal async Task DoAll()
         {
             noShowEcho = true;
             var users = LoadXML();
@@ -79,7 +61,7 @@ namespace SimuCoins
             PluginInfo.Coin?.EchoText("Account(s) Checked...\r\n");
         }
 
-        public void NoGUILogin(string username, string password)
+        internal void NoGUILogin(string username, string password)
         {
             noShowEcho = false;
             Task.Run(async () => await Login(username, password));
@@ -96,12 +78,15 @@ namespace SimuCoins
                 string url = PluginInfo.LoginUrl; // URL for the login page
 
                 var response = await httpClient.GetAsync(url); // Send GET request to the login page
-                var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-                string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
+                string token = PluginInfo.Token; // Extract the verification token from the page content
 
-                string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
-
-                var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
+                var content = new FormUrlEncodedContent(new Dictionary<string, string>  // Create the content object to send with the POST request
+                {
+                    { "__RequestVerificationToken", token },
+                    { "UserName", username },
+                    { "Password", password },
+                    { "RememberMe", "true" }
+                });
 
                 response = await httpClient.PostAsync(url, content); // Send POST request to the login page
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
@@ -151,7 +136,7 @@ namespace SimuCoins
             {
                 PluginInfo.Coin?.EchoText($"DisplayBalance: {ex.Message}");
             }
-            await SignOut();
+            await PluginInfo.SignOut();
         }
 
         private static void UpdateTime(string pageContent)
@@ -215,23 +200,6 @@ namespace SimuCoins
             {
                 PluginInfo.Coin?.EchoText($"ClaimReward: {ex.Message}");
                 return false;
-            }
-        }
-
-        private static async Task SignOut()
-        {
-            string url = PluginInfo.SignOutUrl;
-
-            try
-            {
-                using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
-                var response = await httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException ex)
-            {
-                // Handle any exceptions that might occur
-                PluginInfo.Coin?.EchoText($"Signout: {ex.Message}");
             }
         }
     }

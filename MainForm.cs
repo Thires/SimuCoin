@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using System.Numerics;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -9,22 +7,23 @@ namespace SimuCoins
     public partial class MainForm : Form
     {
         // Create an HttpClient to handle HTTP requests and responses
-        // Create a CookieContainer to store cookies
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new CookieContainer() });
 
         private bool isClosingDueToEscKey = false;
-
         private bool isClaimed = false;
 
         private static string xmlPath = Application.StartupPath;
+        private static readonly Regex BalancePatternRegex = new(PluginInfo.BalancePattern);
+        private static readonly Regex ClaimPatternRegex = new(PluginInfo.ClaimPattern);
+        private static readonly Regex TimePatternRegex = new(PluginInfo.TimePattern);
 
-        public string UserName
+        internal string UserName
         {
             get { return UserNameCB.Text; }
             set { UserNameCB.Text = value; }
         }
 
-        public string Password
+        internal string Password
         {
             get { return PasswordTB.Text; }
             set { PasswordTB.Text = value; }
@@ -33,6 +32,8 @@ namespace SimuCoins
         public MainForm()
         {
             InitializeComponent();
+
+            httpClient.Timeout = TimeSpan.FromSeconds(30);
 
             // Register the event handlers.
             KeyDown += MainForm_KeyDown;
@@ -169,12 +170,7 @@ namespace SimuCoins
             }
         }
 
-        public void GUILogin()
-        {
-            Login();
-        }
-
-        private async void Login()
+        internal async Task GUILogin()
         {
             try
             {
@@ -190,23 +186,26 @@ namespace SimuCoins
                 string url = PluginInfo.LoginUrl; // URL for the login page
 
                 HttpResponseMessage response = await httpClient.GetAsync(url);
-                var pageContent = await response.Content.ReadAsStringAsync(); // Read the response content as a string
-                string token = Regex.Match(pageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value; // Extract the verification token from the page content
+                string token = PluginInfo.Token; // Extract the verification token from the page content
+                
+                string username = UserNameCB.Text.ToUpper(); // Get the username from the text box
+                string password = PasswordTB.Text; // Get the password from the text box
 
-                // Get the username and password from the text boxes
-                string username = UserNameCB.Text.ToUpper();
-                string password = PasswordTB.Text;
+                var content = new FormUrlEncodedContent(new Dictionary<string, string> // Create the content object to send with the POST request
+                {
+                    { "__RequestVerificationToken", token },
+                    { "UserName", username },
+                    { "Password", password },
+                    { "RememberMe", "true" }
+                });
 
-                string postData = $"__RequestVerificationToken={token}&UserName={username}&Password={password}&RememberMe=true"; // Create the POST data to send to the login page
-
-                var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"); // Create the content object to send with the POST request
                 response = await httpClient.PostAsync(url, content); // Send POST request to the login page
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
 
                 if (response.RequestMessage?.RequestUri?.ToString() == PluginInfo.StoreUrl) // Check if the login was successful
                 {
                     statusLBL.Text = $"Login Successful for {username}";
-                    await UpdateBalance();
+                    await UpdateLabels();
                     SaveXML();
                     if (!UserNameCB.Items.Contains(UserNameCB.Text.ToUpper()))
                     {
@@ -232,14 +231,14 @@ namespace SimuCoins
             }
         }
 
-        private async Task UpdateBalance() // Update the SimuCoins balance and claim any available rewards
+        private async Task UpdateLabels() // Update the labels and claim any available rewards
         {
             try
             {
                 var response = await httpClient.GetAsync(PluginInfo.BalanceUrl);
                 var pageContent = await response.Content.ReadAsStringAsync();
-                UpdateTimeLBL(pageContent); // Update the time label with the next subscription bonus time
-                UpdateBalanceLBL(pageContent); // Update the balance label with the current SimuCoins balance
+                UpdateTimeLBL(pageContent); // Update the time label
+                UpdateBalanceLBL(pageContent); // Update the balance label
                 var claimAmount = GetClaimAmount(pageContent); // Get the claim amount, if available
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
@@ -248,21 +247,21 @@ namespace SimuCoins
             }
             catch (Exception ex)
             {
-                PluginInfo.Coin?.EchoText($"UpdateBalance: {ex.Message}");
+                PluginInfo.Coin?.EchoText($"UpdateLabels: {ex.Message}");
             }
-            await SignOut();
+            await PluginInfo.SignOut();
         }
 
         private void UpdateTimeLBL(string pageContent)
         {
-            var time = Regex.Match(pageContent, PluginInfo.TimePattern).Groups[1].Value;
+            var time = TimePatternRegex.Match(pageContent).Groups[1].Value;
             timeLBL.Text = time;
         }
 
         private void UpdateBalanceLBL(string pageContent)
         {
             this.SuspendLayout();
-            var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
+            var balance = BalancePatternRegex.Match(pageContent).Groups[1].Value;
             if (isClaimed)
                 coinsLBL.Text = $"You Now Have {balance}";
             else
@@ -277,7 +276,7 @@ namespace SimuCoins
 
         private static string? GetClaimAmount(string pageContent)
         {
-            var match = Regex.Match(pageContent, PluginInfo.ClaimPattern);
+            var match = ClaimPatternRegex.Match(pageContent);
             return match.Success ? match.Groups[1].Value : null;
         }
 
@@ -315,7 +314,6 @@ namespace SimuCoins
                 }
                 else
                 {
-                    // handle error response
                     PluginInfo.Coin?.EchoText("Request failed: " + response.StatusCode);
                     return false;
                 }
@@ -326,24 +324,6 @@ namespace SimuCoins
                 return false;
             }
         }
-
-        private static async Task SignOut()
-        {
-            string url = PluginInfo.SignOutUrl;
-
-            try
-            {
-                using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
-                var response = await httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException ex)
-            {
-                // Handle any exceptions that might occur
-                PluginInfo.Coin?.EchoText($"SignOut: {ex.Message}");
-            }
-        }
-
 
         private void Button_GotFocus(object? sender, EventArgs e)
         {
@@ -387,7 +367,7 @@ namespace SimuCoins
             this.ResumeLayout();
         }
 
-        private void LoginBTN_Click(object sender, EventArgs e)
+        private async void LoginBTN_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
             coinsLBL.Text = "";
@@ -395,10 +375,10 @@ namespace SimuCoins
             iconPIC.Visible = false;
             exclamationLBL.Visible = false;
             this.ResumeLayout();
-            Login();
+            await GUILogin();
         }
 
-        // The passwordTB_KeyDown event handler checks if the Caps Lock key is on and updates the user interface accordingly. If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
+        // If the Enter key is pressed, it suppresses the key press and performs a click on the login button.
         private void PasswordTB_KeyDown(object sender, KeyEventArgs e)
         {
             var capsLockOn = Control.IsKeyLocked(Keys.CapsLock);

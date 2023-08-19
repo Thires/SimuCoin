@@ -77,9 +77,9 @@
             coinsLBL.ImageAlign = ContentAlignment.MiddleRight;
             coinsLBL.Location = new Point(47, 27);
             coinsLBL.Name = "coinsLBL";
-            coinsLBL.Size = new Size(107, 25);
+            coinsLBL.Size = new Size(90, 25);
             coinsLBL.TabIndex = 8;
-            coinsLBL.Text = "You Have";
+            coinsLBL.Text = "Balance";
             // 
             // timeLBL
             // 
@@ -89,9 +89,9 @@
             timeLBL.ForeColor = Color.White;
             timeLBL.Location = new Point(3, 9);
             timeLBL.Name = "timeLBL";
-            timeLBL.Size = new Size(71, 16);
+            timeLBL.Size = new Size(42, 16);
             timeLBL.TabIndex = 7;
-            timeLBL.Text = "Time Info";
+            timeLBL.Text = "Time";
             // 
             // PasswordTB
             // 

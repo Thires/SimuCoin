@@ -1,7 +1,7 @@
 ﻿using GeniePlugin.Interfaces;
-using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Net;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace SimuCoins
 {
@@ -12,43 +12,62 @@ namespace SimuCoins
         private NoGUI? noForm;
 
         private static readonly HttpClient httpClient = new();
+        private static readonly HttpClientHandler httpClientHandler = new() { CookieContainer = new() };
+        private static string _pagecontent = string.Empty;
+        private static string _token = string.Empty;
 
-        public const string BalanceUrl = "https://store.play.net/store/purchase/dr";
-        public const string ClaimUrl = "https://store.play.net/Store/ClaimReward";
-        public const string LoginUrl = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn";
-        public const string SignOutUrl = "https://store.play.net/Account/SignOut";
-        public const string StoreUrl = "https://store.play.net/";
+        internal const string BalanceUrl = "https://store.play.net/store/purchase/dr";
+        internal const string ClaimUrl = "https://store.play.net/Store/ClaimReward";
+        internal const string LoginUrl = "https://store.play.net/Account/SignIn?returnURL=%2FAccount%2FSignIn";
+        internal const string SignOutUrl = "https://store.play.net/Account/SignOut";
+        internal const string StoreUrl = "https://store.play.net/";
 
-        public const string BalancePattern = "<h1 class=\"balance centered sans_serif\">You Have <span class=\"blue\">(\\d+)</span><img src=\"https://www.play.net/images/layout/store/icons/sc_icon_28_w.png\">!</h1>";
-        public const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
-        public const string NamePattern = "<div\\s+class=\"login\\s+sans_serif\">\\s*(\\S+)\\s+|\\s+<a\\s+href=\"/Account/SignOut\">SIGN OUT</a>\\s*</div>";
-        public const string TimePattern = "<h1 class=\"RewardMessage centered sans_serif\">(.*?)</h1>";
+        internal const string BalancePattern = "<h1 class=\"balance centered sans_serif\">You Have <span class=\"blue\">(\\d+)</span><img src=\"https://www.play.net/images/layout/store/icons/sc_icon_28_w.png\">!</h1>";
+        internal const string ClaimPattern = "<h1 class=\"RewardMessage centered sans_serif\">Subscription Reward: (\\d+) Free SimuCoins</h1>";
+        internal const string NamePattern = "<div\\s+class=\"login\\s+sans_serif\">\\s*(\\S+)\\s+|\\s+<a\\s+href=\"/Account/SignOut\">SIGN OUT</a>\\s*</div>";
+        internal const string TimePattern = "<h1 class=\"RewardMessage centered sans_serif\">(.*?)</h1>";
 
-        private bool _enabled = true;
-
-        public bool Enabled
-        {
-            get => _enabled;
-            set => _enabled = value;
-        }
+        public bool Enabled { get; set; } = true;
 
         public static IHost? Coin { get => coin; set => coin = value; }
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0.7";
+        public string Version => "2.0.9";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
         public string Author => "Thires <Thiresdr@gmail.com>";
 
-        public void Initialize(IHost host)
+        public async void Initialize(IHost host)
         {
             coin = host;
             noForm = new NoGUI();
+            await InitializeAsync();
+        }
 
-            httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-            httpClient.Timeout = TimeSpan.FromSeconds(30);
+        private static async Task InitializeAsync()
+        {
+            await LoadPage();
+        }
+
+        internal static string PageContent
+        {
+            get => _pagecontent;
+            set => _pagecontent = value;
+        }
+
+        internal static string Token
+        {
+            get => _token;
+            set => _token = value;
+        }
+
+        private async static Task LoadPage()
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(LoginUrl);
+            PageContent = await response.Content.ReadAsStringAsync();
+            Token = Regex.Match(PageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value;
         }
 
         public void Show()
@@ -71,10 +90,19 @@ namespace SimuCoins
 
         public string? ParseInput(string text)
         {
-            if (Regex.IsMatch(text, @"(^/sct|sctext|sc|scg|simucoins|scall|sca)(\shelp)$", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(text, @"^/(sct|sctext|sc|simucoins|scall|sca)(\shelp)$|^/simucoins($|\s)|^/sc($|\s)|^/sct($|\s)|^/sctext($|\s)|^/scall($|\s)|^/sca($|\s)", RegexOptions.IgnoreCase))
+            {
+                _ = ParseInputAsync(text);
+                return "";
+            }
+            return text;
+        }
+
+        public async Task ParseInputAsync(string text)
+        {
+            if (Regex.IsMatch(text, @"^/(sct|sctext|sc|simucoins|scall|sca)(\shelp)$", RegexOptions.IgnoreCase))
             {
                 Coin?.EchoText("\r\nUse the GUI to enter accounts that will be saved with successful logins.\r\nAll methods will claim coins if they are available.\r\nCommands for Simucoins:\r\n/sc or /simucoins will open the GUI.\r\n/sc or /simucoins <username> <password> logs in using the GUI.\r\n/sct or /sctext <username> <password> displays text version.\r\n/sca or /scall will display text and log into each account that is saved within the xml.\r\n\r\n#trigger {^Welcome to DragonRealms \\(\\w+\\) v\\d+\\.\\d+$} {#put /sca}\r\n#trigger save\r\n");
-                return "";
             }
             else if (Regex.IsMatch(text, @"^/sct($|\s)|^/sctext($|\s)", RegexOptions.IgnoreCase))
             {
@@ -83,34 +111,48 @@ namespace SimuCoins
                     noForm?.NoGUILogin(arguments[1], arguments[2]);
                 else
                     Coin?.EchoText("Usage: /sct <username> <password> or /sctext <username> <password>");
-                return "";
             }
             else if (Regex.IsMatch(text, @"^/simucoins($|\s)|^/sc($|\s)", RegexOptions.IgnoreCase))
             {
                 Show();
                 var arguments = text.Split(' ');
-                if (arguments.Length == 1) {}
+                if (arguments.Length == 1) { }
                 else if (arguments.Length == 3)
                 {
                     if (form != null)
                     {
                         form.UserName = arguments[1];
                         form.Password = arguments[2];
-                        form.GUILogin();
+                        await form.GUILogin();
                     }
                 }
                 else
                 {
                     Coin?.EchoText("Usage: /simucoins or /sc <username> <password>");
                 }
-                return "";
             }
             else if (Regex.IsMatch(text, @"^/scall($|\s)|^/sca($|\s)", RegexOptions.IgnoreCase))
             {
                 noForm?.DoAll();
-                return "";
             }
-            return text;
+        }
+
+        internal static async Task SignOut()
+        {
+            string url = PluginInfo.SignOutUrl;
+
+            try
+            {
+                using var httpClient = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                httpClient.Dispose();
+                httpClientHandler.Dispose();
+            }
+            catch (HttpRequestException ex)
+            {
+                Coin?.EchoText($"SignOut: {ex.Message}");
+            }
         }
 
         public void ParseXML(string xml)
