@@ -2,7 +2,7 @@
 
 **Requires Genie version 4.0.2.5 or higher to run**<br>
 **Uses .Net 6.0**
-# SimuCoins version 2.0.9
+# SimuCoins version 2.1.0
 Plugin for Genie frontend to log into simucoins to get current amount, time left or to claim
 
 Commands:<br>
