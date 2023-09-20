@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace SimuCoins
@@ -10,6 +9,7 @@ namespace SimuCoins
         private readonly HttpClient httpClient = new(new HttpClientHandler { CookieContainer = new() });
 
         private static bool noShowEcho = false;
+        private static bool isClaimed = false;
 
         public NoGUI()
         {
@@ -64,6 +64,7 @@ namespace SimuCoins
         internal void NoGUILogin(string username, string password)
         {
             noShowEcho = false;
+            isClaimed = false;
             Task.Run(async () => await Login(username, password));
         }
 
@@ -117,12 +118,12 @@ namespace SimuCoins
 
                 Match match = Regex.Match(pageContent, PluginInfo.NamePattern);
                 if (!noShowEcho)
-                    PluginInfo.Coin?.EchoText("\n\rAccount: " + match.Groups[1].Value);
+                    PluginInfo.Coin?.EchoText("\nAccount: " + match.Groups[1].Value);
                 var claimAmount = GetClaimAmount(pageContent);
                 if (!string.IsNullOrEmpty(claimAmount))
                 {
                     if (noShowEcho)
-                        PluginInfo.Coin?.EchoText("Account: " + match.Groups[1].Value);
+                        PluginInfo.Coin?.EchoText("\nAccount: " + match.Groups[1].Value);
                     UpdateBalance(pageContent);
                     await ClaimReward();
                 }
@@ -149,8 +150,13 @@ namespace SimuCoins
         private static void UpdateBalance(string pageContent)
         {
             var balance = Regex.Match(pageContent, PluginInfo.BalancePattern).Groups[1].Value;
-            if (!noShowEcho)
-                PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!\r\n");
+            if (!noShowEcho) 
+            {
+                if (isClaimed)
+                    PluginInfo.Coin?.EchoText($"You Now Have {balance} SimuCoins!\n");
+                else
+                    PluginInfo.Coin?.EchoText($"You Have {balance} SimuCoins!");
+            }
         }
 
         private static string? GetClaimAmount(string pageContent)
@@ -179,7 +185,8 @@ namespace SimuCoins
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
-                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins\r\n");
+                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
+                        isClaimed = true;
                         UpdateBalance(claimPageContent);
                         return true;
                     }

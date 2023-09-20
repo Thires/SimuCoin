@@ -1,5 +1,4 @@
 ﻿using GeniePlugin.Interfaces;
-using System.Net.Http;
 using System.Net;
 using System.Text.RegularExpressions;
 
@@ -33,7 +32,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.0.9";
+        public string Version => "2.1.0";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
