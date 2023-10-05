@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -187,17 +188,17 @@ namespace SimuCoins
 
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 string token = PluginInfo.Token; // Extract the verification token from the page content
-                
+
                 string username = UserNameCB.Text.ToUpper(); // Get the username from the text box
                 string password = PasswordTB.Text; // Get the password from the text box
 
                 var content = new FormUrlEncodedContent(new Dictionary<string, string> // Create the content object to send with the POST request
-                {
-                    { "__RequestVerificationToken", token },
-                    { "UserName", username },
-                    { "Password", password },
-                    { "RememberMe", "true" }
-                });
+                    {
+                        { "__RequestVerificationToken", token },
+                        { "UserName", username },
+                        { "Password", password },
+                        { "RememberMe", "true" }
+                    });
 
                 response = await httpClient.PostAsync(url, content); // Send POST request to the login page
                 _ = await response.Content.ReadAsStringAsync(); // Read the response content as a string
@@ -217,6 +218,29 @@ namespace SimuCoins
                     timeLBL.Text = "There is a problem with your account.";
                     statusLBL.Text = "Incorrect Username and/or Password";
                 }
+            }
+            catch (HttpRequestException)
+            {
+                statusLBL.Text = "No Connection available.";
+            }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                // Handle timeout exception
+                statusLBL.Text = "The request timed out.";
+            }
+            catch (SocketException ex) when (ex.ErrorCode == 995)
+            {
+                // Handle the specific "SocketException (995)" error
+                PluginInfo.Coin?.EchoText($"SocketException (995): The I/O operation was aborted.");
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                PluginInfo.Coin?.EchoText($"An error occurred with store.play.net: {ex.Message}");
+            }
+            finally
+            {
+                // Re-enable GUI components
                 UserNameCB.Enabled = true;
                 UserNameCB.Focus();
                 PasswordTB.Enabled = true;
@@ -224,10 +248,6 @@ namespace SimuCoins
                 RemoveBTN.Enabled = true;
                 ClearBTN.Enabled = true;
                 ResumeLayout();
-            }
-            catch (HttpRequestException)
-            {
-                statusLBL.Text = "No Connection available";
             }
         }
 

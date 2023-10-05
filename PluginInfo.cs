@@ -1,5 +1,6 @@
 ﻿using GeniePlugin.Interfaces;
 using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
 namespace SimuCoins
@@ -32,7 +33,7 @@ namespace SimuCoins
 
         public string Name => "SimuCoins";
 
-        public string Version => "2.1.0";
+        public string Version => "2.1.1";
 
         public string Description => "Log into SimuCoins store to check current coins, time left and auto claim coins when available";
 
@@ -64,10 +65,34 @@ namespace SimuCoins
 
         private async static Task LoadPage()
         {
-            HttpResponseMessage response = await httpClient.GetAsync(LoginUrl);
-            PageContent = await response.Content.ReadAsStringAsync();
-            Token = Regex.Match(PageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value;
+            try
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(LoginUrl);
+                PageContent = await response.Content.ReadAsStringAsync();
+                Token = Regex.Match(PageContent, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />").Groups[1].Value;
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle HTTP request exception
+                Coin?.EchoText($"HTTP request failed: {ex.Message}");
+            }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                // Handle timeout exception
+                PluginInfo.Coin?.EchoText($"The request timed out: {ex.Message}");
+            }
+            catch (SocketException ex) when (ex.ErrorCode == 995)
+            {
+                // Handle the specific "SocketException (995)" error
+                Coin?.EchoText($"SocketException (995): The I/O operation was aborted: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                Coin?.EchoText($"An error occurred with store.play.net: {ex.Message}");
+            }
         }
+
 
         public void Show()
         {

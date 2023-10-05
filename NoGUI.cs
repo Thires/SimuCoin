@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace SimuCoins
@@ -53,12 +54,12 @@ namespace SimuCoins
         {
             noShowEcho = true;
             var users = LoadXML();
-            PluginInfo.Coin?.EchoText("\r\nChecking Account(s)...\r\n");
+            PluginInfo.Coin?.EchoText("\nChecking Account(s)...");
             foreach (var (username, password) in users)
             {
                 await Login(username, EncryptDecrypt.Decrypt(password));
             }
-            PluginInfo.Coin?.EchoText("Account(s) Checked...\r\n");
+            PluginInfo.Coin?.EchoText("\nAccount(s) Checked...\n");
         }
 
         internal void NoGUILogin(string username, string password)
@@ -104,7 +105,22 @@ namespace SimuCoins
             }
             catch (HttpRequestException)
             {
-                PluginInfo.Coin?.EchoText("No Connection available");
+                PluginInfo.Coin?.EchoText("No Connection available.");
+            }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                // Handle timeout exception
+                PluginInfo.Coin?.EchoText("The request timed out.");
+            }
+            catch (SocketException ex) when (ex.ErrorCode == 995)
+            {
+                // Handle the specific "SocketException (995)" error
+                PluginInfo.Coin?.EchoText("SocketException (995): The I/O operation was aborted.");
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                PluginInfo.Coin?.EchoText($"An error occurred with store.play.net: {ex.Message}");
             }
             return true;
         }
@@ -185,7 +201,10 @@ namespace SimuCoins
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
-                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
+                        if (noShowEcho)
+                            PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins\n");
+                        else
+                            PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
                         isClaimed = true;
                         UpdateBalance(claimPageContent);
                         return true;
