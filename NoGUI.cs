@@ -100,7 +100,7 @@ namespace SimuCoins
                 }
                 else
                 {
-                    PluginInfo.Coin?.EchoText("\r\nIncorrect Username and/or Password\r\n");
+                    PluginInfo.Coin?.EchoText("\nIncorrect Username and/or Password\n");
                 }
             }
             catch (HttpRequestException)
@@ -201,10 +201,7 @@ namespace SimuCoins
                     if (match.Success)
                     {
                         var claimAmount = match.Groups[1].Value;
-                        if (noShowEcho)
-                            PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins\n");
-                        else
-                            PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
+                        PluginInfo.Coin?.EchoText($"Claimed {claimAmount} SimuCoins");
                         isClaimed = true;
                         UpdateBalance(claimPageContent);
                         return true;
