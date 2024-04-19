@@ -1,8 +1,8 @@
 ![image](https://user-images.githubusercontent.com/28072996/230968213-94371d57-4573-4d6f-b7f5-7171d18985a4.png)
 
-*If SSL error happens you need to refresh/update your internet credentials<br>
-*run this command in windows cmd<br>
-*certutil.exe -generateSSTFromWU roots.sst
+* If SSL error happens you need to refresh/update your internet credentials<br>
+* run this command in windows admin cmd<br>
+* certutil.exe -generateSSTFromWU roots.sst
 
 **Requires Genie version 4.0.2.5 or higher to run**<br>
 **Uses .Net 6.0**
